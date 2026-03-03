@@ -33,14 +33,6 @@ export function About() {
           aria-hidden="true"
         />
         <div className="relative container mx-auto px-4 max-w-4xl py-24 text-center">
-          <motion.p
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="inline-block mb-4 text-sm font-medium tracking-widest uppercase text-primary bg-primary/10 rounded-full px-4 py-1.5"
-          >
-            Est. 2020 ✦
-          </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -116,7 +108,7 @@ export function About() {
             "Every loop tells a story."
           </p>
           <footer className="mt-5 text-sm text-muted-foreground">
-            — Knot &amp; Loop Crochet Co, founded 2020
+            — Knot &amp; Loop Crochet Co
           </footer>
         </motion.blockquote>
       </section>
