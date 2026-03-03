@@ -60,64 +60,6 @@ export function About() {
         </div>
       </section>
 
-      {/* ── Story ── */}
-      <section className="py-20 px-4 container mx-auto max-w-6xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Text */}
-          <motion.div
-            initial={{ opacity: 0, x: -24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="font-display text-3xl font-bold text-foreground mb-6">
-              How it all began
-            </h2>
-            <div className="space-y-5 text-foreground/75 leading-relaxed">
-              <p>
-                Knot and Loop Crochet Co was born in 2020 from a simple love of
-                yarn and colour. What started as late-night crafting sessions
-                quickly grew into a small business built on the belief that
-                handmade things carry a little extra magic.
-              </p>
-              <p>
-                Every stitch is made by hand, every bag is one of a kind. We
-                believe in slow making, sustainable materials, and the joy of
-                giving someone something truly special.
-              </p>
-              <p>
-                From our first tiny Coin Pouch sold at a local market to our
-                growing online shop, one thing has never changed: we put the
-                same amount of heart into every single piece we make.
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Photo placeholder */}
-          <motion.div
-            initial={{ opacity: 0, x: 24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="relative"
-          >
-            <div className="rounded-3xl overflow-hidden aspect-[4/3] shadow-warm-lg">
-              <img
-                src="/assets/generated/about-founder-workspace.dim_800x600.jpg"
-                alt="Our crochet workspace — yarn balls, hooks, and in-progress bags"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            {/* Floating quote badge */}
-            <div className="absolute -bottom-5 -left-5 bg-primary text-primary-foreground rounded-2xl px-6 py-4 shadow-warm-lg max-w-xs">
-              <p className="font-display text-sm italic leading-snug">
-                "Every loop tells a story."
-              </p>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
       {/* ── Values ── */}
       <section className="py-20 bg-muted/40 border-y border-border">
         <div className="container mx-auto px-4 max-w-6xl">
