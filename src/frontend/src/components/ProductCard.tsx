@@ -2,6 +2,7 @@ import type { Product } from "@/backend.d";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { ShoppingBag } from "lucide-react";
 import { motion } from "motion/react";
 import { toast } from "sonner";
@@ -51,6 +52,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product, index }: ProductCardProps) {
   const { addToCart } = useCart();
+  const { formatPrice } = useCurrency();
 
   const handleAddToCart = () => {
     addToCart(product);
@@ -112,7 +114,7 @@ export function ProductCard({ product, index }: ProductCardProps) {
 
         <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/60">
           <span className="font-display text-lg font-bold text-primary">
-            ${product.price.toFixed(2)}
+            {formatPrice(product.price)}
           </span>
           <Button
             size="sm"

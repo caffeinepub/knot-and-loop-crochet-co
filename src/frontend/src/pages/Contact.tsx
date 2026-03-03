@@ -41,7 +41,7 @@ export function Contact() {
         <div className="flex flex-col gap-5">
           {/* Instagram */}
           <motion.a
-            href="https://instagram.com/knotandloopcrochet"
+            href="https://www.instagram.com/knotandloopcrochet2?igsh=MjFoemJzeGNjN200"
             target="_blank"
             rel="noopener noreferrer"
             data-ocid="contact.instagram_button"
@@ -64,7 +64,7 @@ export function Contact() {
                 Instagram
               </p>
               <p className="text-white/80 text-sm mt-0.5">
-                @knotandloopcrochet
+                @knotandloopcrochet2
               </p>
               <p className="text-white/70 text-xs mt-1">
                 Shop drops, behind-the-scenes, and custom order inspo
