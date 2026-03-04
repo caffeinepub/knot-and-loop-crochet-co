@@ -71,7 +71,7 @@ export function Home() {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage:
-              "url('/assets/generated/hero-crochet-bags.dim_1200x600.jpg')",
+              "url('/assets/generated/hero-crochet-bg.dim_1400x700.jpg')",
           }}
           aria-hidden="true"
         />
