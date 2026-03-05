@@ -1,4 +1,3 @@
-import { StripeSetup } from "@/components/StripeSetup";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { Toaster } from "@/components/ui/sonner";
@@ -7,12 +6,17 @@ import { CartProvider } from "@/contexts/CartContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import { InternetIdentityProvider } from "@/hooks/useInternetIdentity";
 import { About } from "@/pages/About";
+import { Billing } from "@/pages/Billing";
+import { CartRazorpayBilling } from "@/pages/CartRazorpayBilling";
 import { Contact } from "@/pages/Contact";
 import { Home } from "@/pages/Home";
 import { Orders } from "@/pages/Orders";
 import { PaymentFailure } from "@/pages/PaymentFailure";
+import { PaymentMethod } from "@/pages/PaymentMethod";
 import { PaymentSuccess } from "@/pages/PaymentSuccess";
+import { RazorpayBilling } from "@/pages/RazorpayBilling";
 import { Shop } from "@/pages/Shop";
+import { ThankYou } from "@/pages/ThankYou";
 import {
   Outlet,
   RouterProvider,
@@ -36,7 +40,6 @@ const rootRoute = createRootRoute({
               <Footer />
             </div>
             <Toaster richColors position="top-right" />
-            <StripeSetup />
           </CartProvider>
         </AuthProvider>
       </CurrencyProvider>
@@ -87,6 +90,36 @@ const paymentFailureRoute = createRoute({
   component: PaymentFailure,
 });
 
+const paymentMethodRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/payment",
+  component: PaymentMethod,
+});
+
+const billingRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/billing",
+  component: Billing,
+});
+
+const thankYouRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/thank-you",
+  component: ThankYou,
+});
+
+const razorpayBillingRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/razorpay-billing",
+  component: RazorpayBilling,
+});
+
+const cartRazorpayBillingRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/cart-razorpay-billing",
+  component: CartRazorpayBilling,
+});
+
 const routeTree = rootRoute.addChildren([
   homeRoute,
   shopRoute,
@@ -95,6 +128,11 @@ const routeTree = rootRoute.addChildren([
   ordersRoute,
   paymentSuccessRoute,
   paymentFailureRoute,
+  paymentMethodRoute,
+  billingRoute,
+  thankYouRoute,
+  razorpayBillingRoute,
+  cartRazorpayBillingRoute,
 ]);
 
 const router = createRouter({ routeTree });

@@ -12,6 +12,7 @@ interface CartContextValue {
   removeFromCart: (id: bigint) => void;
   updateQuantity: (id: bigint, quantity: number) => void;
   clearCart: () => void;
+  setCartToSingleItem: (product: Product) => void;
   totalItems: number;
   totalPrice: number;
 }
@@ -55,6 +56,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems([]);
   };
 
+  const setCartToSingleItem = (product: Product) => {
+    setItems([{ product, quantity: 1 }]);
+  };
+
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = items.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
@@ -69,6 +74,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         removeFromCart,
         updateQuantity,
         clearCart,
+        setCartToSingleItem,
         totalItems,
         totalPrice,
       }}

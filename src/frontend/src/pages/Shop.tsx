@@ -6,20 +6,13 @@ import { PackageSearch } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
 
-const CATEGORIES = [
-  "All",
-  "Bags",
-  "Pouches",
-  "Scarves",
-  "Accessories",
-] as const;
+const CATEGORIES = ["All", "Bags", "Pouches", "Accessories"] as const;
 type Category = (typeof CATEGORIES)[number];
 
 const tabOcids: Record<Category, string> = {
   All: "shop.all_tab",
   Bags: "shop.bags_tab",
   Pouches: "shop.pouches_tab",
-  Scarves: "shop.scarves_tab",
   Accessories: "shop.accessories_tab",
 };
 
@@ -66,19 +59,67 @@ const sampleProducts: Product[] = [
     price: 1.0,
   },
   {
-    id: BigInt(8),
-    name: "Stripe Weekend Scarf",
+    id: BigInt(6),
+    name: "Sunset Bucket Bag",
     description:
-      "Cozy terracotta and cream striped scarf with generous fringe at both ends.",
-    category: "Scarves",
+      "A roomy crochet bucket bag in warm sunset tones with a drawstring closure and braided handles.",
+    category: "Bags",
+    price: 1.0,
+  },
+  {
+    id: BigInt(7),
+    name: "Boho Fringe Tote",
+    description:
+      "A stylish fringed tote in earthy brown and cream with extra-wide straps — great for everyday use.",
+    category: "Bags",
+    price: 1.0,
+  },
+  {
+    id: BigInt(8),
+    name: "Petal Zipper Pouch",
+    description:
+      "A charming crochet pouch with a floral petal stitch in blush pink — fits makeup, coins, or trinkets.",
+    category: "Pouches",
     price: 1.0,
   },
   {
     id: BigInt(9),
-    name: "Sage Wrap Scarf",
+    name: "Mustard Wristlet Pouch",
     description:
-      "An oversized sage green wrap scarf that doubles as a shawl for chilly evenings.",
-    category: "Scarves",
+      "A compact wristlet pouch in mustard yellow with a secure zip and adjustable loop strap.",
+    category: "Pouches",
+    price: 1.0,
+  },
+  {
+    id: BigInt(14),
+    name: "Terracotta Dreamcatcher",
+    description:
+      "A handcrafted crochet dreamcatcher in terracotta and cream with delicate feather tassels — beautiful wall decor.",
+    category: "Accessories",
+    price: 1.0,
+  },
+  {
+    id: BigInt(15),
+    name: "Sage Boho Dreamcatcher",
+    description:
+      "An intricate sage green crochet dreamcatcher with wooden beads and fringe — perfect for any boho space.",
+    category: "Accessories",
+    price: 1.0,
+  },
+  {
+    id: BigInt(16),
+    name: "Flower Crochet Keychain",
+    description:
+      "A sweet crochet flower keychain in pastel tones — a handmade charm for bags, keys, or gifts.",
+    category: "Accessories",
+    price: 1.0,
+  },
+  {
+    id: BigInt(17),
+    name: "Rainbow Mini Keychain",
+    description:
+      "A cheerful mini crochet rainbow keychain in vibrant colors — a tiny handmade touch of joy.",
+    category: "Accessories",
     price: 1.0,
   },
   {
@@ -110,6 +151,14 @@ const sampleProducts: Product[] = [
     name: "Mini Crochet Keychain",
     description:
       "A tiny crochet charm keychain in mustard yellow — a cute handmade accent for your keys or bag.",
+    category: "Accessories",
+    price: 1.0,
+  },
+  {
+    id: BigInt(18),
+    name: "Rose Shell Hairband",
+    description:
+      "A stretchy crochet hairband in soft rose pink with a delicate shell stitch pattern — handmade and gentle on hair.",
     category: "Accessories",
     price: 1.0,
   },

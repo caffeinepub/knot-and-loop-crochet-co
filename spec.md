@@ -1,41 +1,27 @@
 # Knot and Loop Crochet Co
 
 ## Current State
-
-- Multi-page React frontend: Home, Shop, About, Contact, PaymentSuccess, PaymentFailure
-- Backend has basic Product data (id, name, price, description, category) — read-only, no user data stored
-- Stripe component integrated but no user accounts
-- Cart context in frontend, currency context for region-based pricing
-- No login/signup, no user database, no order history
+- Cart checkout goes to `/payment` (Stripe payment method selection) → `/billing` (Stripe redirect)
+- Individual product "Buy Now" goes to `/razorpay-billing` (collects billing details, opens Razorpay modal)
+- StripeSetup component floats on every page
+- CartDrawer footer says "Secured by Stripe"
+- Razorpay is already wired for single-product Buy Now flow
 
 ## Requested Changes (Diff)
 
 ### Add
-- User login and signup (email + password via authorization component)
-- User profile stored in backend: name, email, address
-- Orders stored in backend: order ID, user principal, items, total, status, timestamp
-- After successful Stripe payment, save order to backend
-- Order history page for logged-in users
-- Login/Signup page and modal accessible from navbar
-- Protected routes: order history requires login
+- New page `CartRazorpayBilling` at `/cart-razorpay-billing`: collects name, email, phone for the full cart, then opens Razorpay checkout with the cart total in INR (paise), on success navigates to `/thank-you` with orderId/paymentId/amount params
+- Cart total passed to Razorpay as sum of all cart items × quantities converted to paise
 
 ### Modify
-- Navbar: add Login/Signup button when logged out, show user name + logout when logged in
-- Cart checkout: if not logged in, prompt to login before checkout
-- Payment success page: save order to backend after successful payment
+- `CartDrawer`: change `handleCheckout` to navigate to `/cart-razorpay-billing` instead of `/payment`; update footer copy from "Secured by Stripe" to "Secured by Razorpay"
+- `App.tsx`: add route for `/cart-razorpay-billing`; remove `<StripeSetup />` component
+- Keep existing `/payment`, `/billing`, and StripeSetup files in place (just stop rendering StripeSetup and don't use those routes from cart)
 
 ### Remove
-- Nothing removed
+- Nothing deleted from disk, just stop routing to Stripe from cart checkout
 
 ## Implementation Plan
-
-1. Backend: Add User type (principal, name, email, address), Order type (id, userPrincipal, items, total, currency, status, createdAt)
-2. Backend: Add functions — registerUser, getUser, updateUser, createOrder, getMyOrders, getAllOrders (admin)
-3. Select components: authorization, stripe
-4. Frontend: Add AuthContext using authorization component
-5. Frontend: Add LoginModal / SignupModal components
-6. Frontend: Update Navbar with auth state (login button / user menu)
-7. Frontend: Add OrderHistory page
-8. Frontend: Update PaymentSuccess to save order after payment
-9. Frontend: Add route for /orders (protected)
-10. Frontend: Cart checkout flow prompts login if not authenticated
+1. Create `src/frontend/src/pages/CartRazorpayBilling.tsx` — collects billing details for cart, computes total from cart context, opens Razorpay, navigates to thank-you on success
+2. Update `CartDrawer.tsx` — navigate to `/cart-razorpay-billing` on checkout, update footer text
+3. Update `App.tsx` — add cartRazorpayBillingRoute, remove `<StripeSetup />` render

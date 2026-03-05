@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import { productImages } from "@/lib/productImages";
-import { ShoppingBag } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
+import { ShoppingBag, Zap } from "lucide-react";
 import { motion } from "motion/react";
 import { toast } from "sonner";
 
@@ -24,11 +25,23 @@ interface ProductCardProps {
 export function ProductCard({ product, index }: ProductCardProps) {
   const { addToCart } = useCart();
   const { formatPrice } = useCurrency();
+  const navigate = useNavigate();
 
   const handleAddToCart = () => {
     addToCart(product);
     toast.success(`"${product.name}" added to cart!`, {
       duration: 2500,
+    });
+  };
+
+  const handleBuyNow = () => {
+    navigate({
+      to: "/razorpay-billing",
+      search: {
+        productName: product.name,
+        price: String(product.price),
+        description: product.description,
+      },
     });
   };
 
@@ -83,19 +96,31 @@ export function ProductCard({ product, index }: ProductCardProps) {
           {product.description}
         </p>
 
-        <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/60">
-          <span className="font-display text-lg font-bold text-primary">
+        <div className="mt-auto pt-2 border-t border-border/60 space-y-2">
+          <span className="font-display text-lg font-bold text-primary block">
             {formatPrice(product.price)}
           </span>
-          <Button
-            size="sm"
-            onClick={handleAddToCart}
-            data-ocid={`shop.add_to_cart_button.${index}`}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-4 transition-transform duration-150 active:scale-95"
-          >
-            <ShoppingBag className="w-3.5 h-3.5 mr-1.5" />
-            Add to Cart
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleAddToCart}
+              data-ocid={`shop.add_to_cart_button.${index}`}
+              className="flex-1 rounded-full border-primary/40 text-primary hover:bg-primary/10 transition-transform duration-150 active:scale-95 text-xs"
+            >
+              <ShoppingBag className="w-3 h-3 mr-1" />
+              Add to Cart
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleBuyNow}
+              data-ocid={`shop.buy_now_button.${index}`}
+              className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full transition-transform duration-150 active:scale-95 text-xs font-semibold shadow-sm"
+            >
+              <Zap className="w-3 h-3 mr-1" />
+              Buy Now
+            </Button>
+          </div>
         </div>
       </div>
     </motion.article>

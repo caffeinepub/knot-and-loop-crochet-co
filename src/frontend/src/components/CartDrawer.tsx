@@ -1,20 +1,9 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
-import { useActor } from "@/hooks/useActor";
-import { useCreateCheckoutSession } from "@/hooks/useCreateCheckoutSession";
 import { productImages } from "@/lib/productImages";
-import { useQuery } from "@tanstack/react-query";
-import {
-  Loader2,
-  LogIn,
-  Minus,
-  Plus,
-  ShoppingBag,
-  Trash2,
-  X,
-} from "lucide-react";
-import { toast } from "sonner";
+import { useNavigate } from "@tanstack/react-router";
+import { LogIn, Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { ScrollArea } from "./ui/scroll-area";
@@ -29,43 +18,17 @@ interface CartDrawerProps {
 export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
   const { items, removeFromCart, updateQuantity, totalPrice } = useCart();
   const { formatPrice } = useCurrency();
-  const { actor } = useActor();
   const { isLoggedIn, openLoginModal } = useAuth();
-  const createCheckoutSession = useCreateCheckoutSession();
+  const navigate = useNavigate();
 
-  const { data: isStripeConfigured } = useQuery({
-    queryKey: ["isStripeConfigured"],
-    queryFn: async () => {
-      if (!actor) return false;
-      return (actor as any).isStripeConfigured();
-    },
-    enabled: !!actor,
-  });
-
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     if (items.length === 0) return;
     if (!isLoggedIn) {
       openLoginModal();
       return;
     }
-
-    const shoppingItems = items.map((item) => ({
-      currency: "usd",
-      productName: item.product.name,
-      productDescription: item.product.description,
-      priceInCents: BigInt(Math.round(item.product.price * 100)),
-      quantity: BigInt(item.quantity),
-    }));
-
-    try {
-      const session = await createCheckoutSession.mutateAsync(shoppingItems);
-      window.location.href = session.url;
-    } catch (err) {
-      toast.error("Checkout failed. Please try again.", {
-        description:
-          err instanceof Error ? err.message : "An unexpected error occurred.",
-      });
-    }
+    onOpenChange(false);
+    navigate({ to: "/cart-razorpay-billing" });
   };
 
   const isEmpty = items.length === 0;
@@ -243,17 +206,6 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
                 </div>
               )}
 
-              {/* Stripe not configured notice */}
-              {isStripeConfigured === false && (
-                <div className="rounded-lg bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-800">
-                  <p className="font-medium">Stripe Setup Required</p>
-                  <p className="text-xs mt-0.5 text-amber-700">
-                    Payment processing isn't configured yet. Contact the store
-                    owner.
-                  </p>
-                </div>
-              )}
-
               {/* Subtotal */}
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground font-medium">
@@ -273,38 +225,176 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
               <Button
                 className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-5 shadow-warm transition-all duration-200 active:scale-[0.98]"
                 onClick={handleCheckout}
-                disabled={
-                  createCheckoutSession.isPending ||
-                  isStripeConfigured === false
-                }
                 data-ocid="cart.checkout_button"
               >
-                {createCheckoutSession.isPending ? (
-                  <span
-                    className="flex items-center gap-2"
-                    data-ocid="cart.loading_state"
-                  >
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Redirecting to Checkout…
-                  </span>
-                ) : (
-                  <>
-                    <svg
-                      className="w-4 h-4 mr-2"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.591-7.305z" />
-                    </svg>
-                    Checkout with Stripe
-                  </>
-                )}
+                Checkout
               </Button>
 
               <p className="text-xs text-center text-muted-foreground">
-                Secured by Stripe · SSL encrypted
+                Secured by Razorpay · SSL encrypted · UPI, Cards, Net Banking
+                &amp; more
               </p>
+
+              {/* Payment methods */}
+              <div
+                className="flex flex-col items-center gap-2 pt-1"
+                data-ocid="cart.payment_methods"
+              >
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-semibold">
+                  We accept
+                </p>
+                <div className="flex flex-wrap justify-center gap-1.5">
+                  {/* Visa */}
+                  <span className="inline-flex items-center justify-center h-6 px-2 rounded bg-white border border-border/60 shadow-sm">
+                    <svg
+                      viewBox="0 0 48 16"
+                      height="10"
+                      aria-label="Visa"
+                      role="img"
+                    >
+                      <text
+                        x="0"
+                        y="13"
+                        fontFamily="Arial, sans-serif"
+                        fontWeight="bold"
+                        fontSize="14"
+                        fill="#1A1F71"
+                        letterSpacing="-0.5"
+                      >
+                        VISA
+                      </text>
+                    </svg>
+                  </span>
+                  {/* Mastercard */}
+                  <span className="inline-flex items-center justify-center h-6 px-2 rounded bg-white border border-border/60 shadow-sm">
+                    <svg
+                      viewBox="0 0 38 24"
+                      height="14"
+                      aria-label="Mastercard"
+                      role="img"
+                    >
+                      <circle cx="13" cy="12" r="10" fill="#EB001B" />
+                      <circle cx="25" cy="12" r="10" fill="#F79E1B" />
+                      <path
+                        d="M19 5.2a10 10 0 0 1 0 13.6A10 10 0 0 1 19 5.2z"
+                        fill="#FF5F00"
+                      />
+                    </svg>
+                  </span>
+                  {/* American Express */}
+                  <span className="inline-flex items-center justify-center h-6 px-2.5 rounded bg-[#007BC1] border border-[#0070b0]/40 shadow-sm">
+                    <svg
+                      viewBox="0 0 48 14"
+                      height="9"
+                      aria-label="American Express"
+                      role="img"
+                    >
+                      <text
+                        x="0"
+                        y="11"
+                        fontFamily="Arial, sans-serif"
+                        fontWeight="bold"
+                        fontSize="11"
+                        fill="white"
+                        letterSpacing="0.3"
+                      >
+                        AMEX
+                      </text>
+                    </svg>
+                  </span>
+                  {/* Apple Pay */}
+                  <span className="inline-flex items-center justify-center h-6 px-2 rounded bg-black border border-black/20 shadow-sm">
+                    <svg
+                      viewBox="0 0 52 22"
+                      height="13"
+                      aria-label="Apple Pay"
+                      role="img"
+                    >
+                      <path
+                        d="M10.5 4.5C11.2 3.6 11.7 2.4 11.5 1.2 10.4 1.3 9.1 2 8.3 2.9 7.6 3.7 7 5 7.2 6.1 8.4 6.2 9.7 5.4 10.5 4.5z"
+                        fill="white"
+                      />
+                      <path
+                        d="M11.5 6.3c-1.7-.1-3.2 1-4 1-.8 0-2-.9-3.3-.9C2.5 6.5 1 7.6.3 9.2c-1.4 2.4-.4 6 1 7.9.7.9 1.5 2 2.6 2 1 0 1.4-.7 2.7-.7 1.3 0 1.6.7 2.7.7s1.8-1 2.5-2c.8-1.1 1.1-2.2 1.1-2.3-.1 0-2.1-.8-2.1-3.1 0-2 1.6-2.9 1.7-3-.9-1.3-2.3-1.4-2.7-1.4z"
+                        fill="white"
+                      />
+                      <text
+                        x="17"
+                        y="16"
+                        fontFamily="-apple-system, BlinkMacSystemFont, sans-serif"
+                        fontWeight="500"
+                        fontSize="13"
+                        fill="white"
+                        letterSpacing="-0.3"
+                      >
+                        Pay
+                      </text>
+                    </svg>
+                  </span>
+                  {/* Google Pay */}
+                  <span className="inline-flex items-center justify-center h-6 px-2 rounded bg-white border border-border/60 shadow-sm gap-0.5">
+                    <svg
+                      viewBox="0 0 41 17"
+                      height="11"
+                      aria-label="Google Pay"
+                      role="img"
+                    >
+                      <text
+                        x="0"
+                        y="13"
+                        fontFamily="Arial, sans-serif"
+                        fontWeight="500"
+                        fontSize="12"
+                        fill="#5F6368"
+                        letterSpacing="-0.2"
+                      >
+                        G
+                      </text>
+                      <text
+                        x="8"
+                        y="13"
+                        fontFamily="Arial, sans-serif"
+                        fontWeight="700"
+                        fontSize="12"
+                        fill="#5F6368"
+                        letterSpacing="-0.2"
+                      >
+                        Pay
+                      </text>
+                    </svg>
+                  </span>
+                  {/* UPI */}
+                  <span className="inline-flex items-center justify-center h-6 px-2.5 rounded bg-white border border-border/60 shadow-sm">
+                    <svg
+                      viewBox="0 0 38 16"
+                      height="11"
+                      aria-label="UPI"
+                      role="img"
+                    >
+                      <rect width="38" height="16" rx="2" fill="white" />
+                      <text
+                        x="3"
+                        y="12"
+                        fontFamily="Arial, sans-serif"
+                        fontWeight="bold"
+                        fontSize="10"
+                        fill="#097939"
+                        letterSpacing="0.5"
+                      >
+                        UPI
+                      </text>
+                      <path
+                        d="M28 3 L35 8 L28 13"
+                        stroke="#FF6B35"
+                        strokeWidth="2.5"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </div>
+              </div>
             </div>
           </>
         )}
