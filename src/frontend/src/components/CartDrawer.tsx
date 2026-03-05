@@ -28,7 +28,7 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
       return;
     }
     onOpenChange(false);
-    navigate({ to: "/cart-razorpay-billing" });
+    navigate({ to: "/payment-select", search: { mode: "cart" } });
   };
 
   const isEmpty = items.length === 0;

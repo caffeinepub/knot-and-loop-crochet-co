@@ -36,8 +36,9 @@ export function ProductCard({ product, index }: ProductCardProps) {
 
   const handleBuyNow = () => {
     navigate({
-      to: "/razorpay-billing",
+      to: "/payment-select",
       search: {
+        mode: "buynow",
         productName: product.name,
         price: String(product.price),
         description: product.description,

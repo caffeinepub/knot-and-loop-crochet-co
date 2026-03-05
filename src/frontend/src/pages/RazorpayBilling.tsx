@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { openRazorpayCheckout } from "@/lib/razorpay";
-import { Link, useNavigate, useSearch } from "@tanstack/react-router";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -22,6 +22,55 @@ const PAYMENT_BADGES = [
   { label: "Cards", color: "bg-primary/10 text-primary" },
   { label: "Net Banking", color: "bg-green-100 text-green-700" },
 ];
+
+// ── 3-step indicator ──
+function StepIndicator({ currentStep }: { currentStep: number }) {
+  const steps = ["Payment", "Billing Details", "Order Confirmation"];
+  return (
+    <ol className="flex items-center gap-0 mb-8">
+      {steps.map((label, idx) => {
+        const stepNum = idx + 1;
+        const isActive = stepNum === currentStep;
+        const isDone = stepNum < currentStep;
+        return (
+          <li key={label} className="flex items-center">
+            <div className="flex flex-col items-center">
+              <div
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${
+                  isDone
+                    ? "bg-primary text-primary-foreground"
+                    : isActive
+                      ? "bg-primary text-primary-foreground ring-4 ring-primary/20"
+                      : "bg-muted text-muted-foreground"
+                }`}
+              >
+                {isDone ? <CheckCircle2 className="w-4 h-4" /> : stepNum}
+              </div>
+              <span
+                className={`mt-1.5 text-xs font-medium whitespace-nowrap ${
+                  isActive
+                    ? "text-primary"
+                    : isDone
+                      ? "text-foreground"
+                      : "text-muted-foreground"
+                }`}
+              >
+                {label}
+              </span>
+            </div>
+            {idx < steps.length - 1 && (
+              <div
+                className={`h-0.5 w-10 sm:w-16 mx-2 mb-5 rounded-full transition-all duration-300 ${
+                  isDone ? "bg-primary" : "bg-border"
+                }`}
+              />
+            )}
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
 
 export function RazorpayBilling() {
   const search = useSearch({ strict: false }) as {
@@ -102,14 +151,25 @@ export function RazorpayBilling() {
           transition={{ duration: 0.35 }}
           className="mb-8"
         >
-          <Link
-            to="/shop"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-            data-ocid="razorpay_billing.link"
+          <button
+            type="button"
+            onClick={() =>
+              navigate({
+                to: "/payment-select",
+                search: {
+                  mode: "buynow",
+                  productName,
+                  price: String(priceRaw),
+                  description,
+                },
+              })
+            }
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors group"
+            data-ocid="razorpay_billing.back_button"
           >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Shop
-          </Link>
+            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
+            Back to Payment Method
+          </button>
         </motion.div>
 
         {/* Step indicator */}
@@ -117,27 +177,8 @@ export function RazorpayBilling() {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="flex items-center gap-3 mb-8"
         >
-          {/* Step 1 — active */}
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shadow-sm">
-              1
-            </div>
-            <span className="text-sm font-semibold text-foreground">
-              Billing Details
-            </span>
-          </div>
-          <div className="flex-1 h-px bg-border max-w-[60px]" />
-          {/* Step 2 — inactive */}
-          <div className="flex items-center gap-2 opacity-40">
-            <div className="w-8 h-8 rounded-full border-2 border-border flex items-center justify-center text-sm font-bold text-muted-foreground">
-              2
-            </div>
-            <span className="text-sm font-medium text-muted-foreground">
-              Payment
-            </span>
-          </div>
+          <StepIndicator currentStep={2} />
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">

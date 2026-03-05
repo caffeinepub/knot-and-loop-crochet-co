@@ -13,6 +13,7 @@ import { Home } from "@/pages/Home";
 import { Orders } from "@/pages/Orders";
 import { PaymentFailure } from "@/pages/PaymentFailure";
 import { PaymentMethod } from "@/pages/PaymentMethod";
+import { PaymentSelect } from "@/pages/PaymentSelect";
 import { PaymentSuccess } from "@/pages/PaymentSuccess";
 import { RazorpayBilling } from "@/pages/RazorpayBilling";
 import { Shop } from "@/pages/Shop";
@@ -120,6 +121,12 @@ const cartRazorpayBillingRoute = createRoute({
   component: CartRazorpayBilling,
 });
 
+const paymentSelectRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/payment-select",
+  component: PaymentSelect,
+});
+
 const routeTree = rootRoute.addChildren([
   homeRoute,
   shopRoute,
@@ -133,6 +140,7 @@ const routeTree = rootRoute.addChildren([
   thankYouRoute,
   razorpayBillingRoute,
   cartRazorpayBillingRoute,
+  paymentSelectRoute,
 ]);
 
 const router = createRouter({ routeTree });
