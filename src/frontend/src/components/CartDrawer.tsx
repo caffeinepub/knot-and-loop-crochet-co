@@ -28,7 +28,7 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
       return;
     }
     onOpenChange(false);
-    navigate({ to: "/payment-select", search: { mode: "cart" } });
+    navigate({ to: "/billing" });
   };
 
   const isEmpty = items.length === 0;
@@ -229,11 +229,6 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
               >
                 Checkout
               </Button>
-
-              <p className="text-xs text-center text-muted-foreground">
-                Secured by Razorpay · SSL encrypted · UPI, Cards, Net Banking
-                &amp; more
-              </p>
 
               {/* Payment methods */}
               <div

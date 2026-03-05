@@ -88,7 +88,7 @@ export function Contact() {
 
           {/* WhatsApp */}
           <motion.a
-            href="https://wa.me/1234567890"
+            href="https://wa.me/917358160547"
             target="_blank"
             rel="noopener noreferrer"
             data-ocid="contact.whatsapp_button"
@@ -107,7 +107,7 @@ export function Contact() {
               <p className="font-display text-xl font-bold text-white leading-tight">
                 WhatsApp
               </p>
-              <p className="text-white/80 text-sm mt-0.5">+1 (234) 567 890</p>
+              <p className="text-white/80 text-sm mt-0.5">+91 73581 60547</p>
               <p className="text-white/70 text-xs mt-1">
                 Custom orders, sizing, and quick questions
               </p>

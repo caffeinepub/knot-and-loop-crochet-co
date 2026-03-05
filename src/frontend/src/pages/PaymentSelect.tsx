@@ -330,11 +330,16 @@ export function PaymentSelect() {
     sessionStorage.setItem("selectedPaymentMethod", methodId);
 
     if (mode === "cart") {
-      navigate({ to: "/cart-razorpay-billing" });
+      navigate({ to: "/payment" });
     } else {
       navigate({
-        to: "/razorpay-billing",
-        search: { productName, price: String(price), description },
+        to: "/payment",
+        search: {
+          mode: "buynow",
+          productName,
+          price: String(price),
+          description,
+        },
       });
     }
   };

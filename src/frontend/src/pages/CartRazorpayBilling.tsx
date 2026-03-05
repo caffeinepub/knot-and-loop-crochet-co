@@ -161,9 +161,7 @@ export function CartRazorpayBilling() {
         >
           <button
             type="button"
-            onClick={() =>
-              navigate({ to: "/payment-select", search: { mode: "cart" } })
-            }
+            onClick={() => window.history.back()}
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors group"
             data-ocid="cart_razorpay_billing.back_button"
           >

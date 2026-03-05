@@ -3,10 +3,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 import { productImages } from "@/lib/productImages";
-import { useNavigate } from "@tanstack/react-router";
-import { ShoppingBag, Zap } from "lucide-react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { Heart, ShoppingBag, Star, Zap } from "lucide-react";
 import { motion } from "motion/react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const categoryGradients: Record<string, string> = {
@@ -22,21 +24,44 @@ interface ProductCardProps {
   index: number;
 }
 
+function getAvgRating(productId: string): number | null {
+  try {
+    const raw = localStorage.getItem(`knl_reviews_${productId}`);
+    if (!raw) return null;
+    const reviews = JSON.parse(raw) as { rating: number }[];
+    if (!reviews.length) return null;
+    return reviews.reduce((s, r) => s + r.rating, 0) / reviews.length;
+  } catch {
+    return null;
+  }
+}
+
 export function ProductCard({ product, index }: ProductCardProps) {
   const { addToCart } = useCart();
   const { formatPrice } = useCurrency();
+  const { isWishlisted, toggleWishlist } = useWishlist();
   const navigate = useNavigate();
 
-  const handleAddToCart = () => {
+  const idStr = product.id.toString();
+  const wishlisted = isWishlisted(idStr);
+
+  const [avgRating, setAvgRating] = useState<number | null>(null);
+  useEffect(() => {
+    setAvgRating(getAvgRating(idStr));
+  }, [idStr]);
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     addToCart(product);
-    toast.success(`"${product.name}" added to cart!`, {
-      duration: 2500,
-    });
+    toast.success(`"${product.name}" added to cart!`, { duration: 2500 });
   };
 
-  const handleBuyNow = () => {
+  const handleBuyNow = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     navigate({
-      to: "/payment-select",
+      to: "/billing",
       search: {
         mode: "buynow",
         productName: product.name,
@@ -44,6 +69,12 @@ export function ProductCard({ product, index }: ProductCardProps) {
         description: product.description,
       },
     });
+  };
+
+  const handleWishlist = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleWishlist(idStr);
   };
 
   const imgSrc = productImages[product.name];
@@ -59,9 +90,12 @@ export function ProductCard({ product, index }: ProductCardProps) {
       data-ocid={`shop.product_card.item.${index}`}
       className="bg-card rounded-2xl overflow-hidden border border-border shadow-warm hover:shadow-warm-lg transition-shadow duration-300 group flex flex-col"
     >
-      {/* Image */}
-      <div
-        className={`relative overflow-hidden aspect-square bg-gradient-to-br ${gradientClass}`}
+      {/* Image — clickable to product detail */}
+      <Link
+        to="/product/$productId"
+        params={{ productId: idStr }}
+        data-ocid={`shop.product_image_link.${index}`}
+        className={`relative overflow-hidden aspect-square bg-gradient-to-br ${gradientClass} block`}
       >
         {imgSrc ? (
           <img
@@ -77,14 +111,37 @@ export function ProductCard({ product, index }: ProductCardProps) {
             <ShoppingBag className="w-12 h-12 text-primary/40" />
           </div>
         )}
-      </div>
+
+        {/* Wishlist heart */}
+        <button
+          type="button"
+          data-ocid={`shop.wishlist_toggle.${index}`}
+          onClick={handleWishlist}
+          className={`absolute top-2.5 right-2.5 w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-200 hover:scale-110 active:scale-95 ${
+            wishlisted
+              ? "bg-red-50 text-red-500 border border-red-200"
+              : "bg-white/90 text-foreground/50 border border-white/60 backdrop-blur-sm"
+          }`}
+          aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+        >
+          <Heart
+            className={`w-4 h-4 ${wishlisted ? "fill-red-500 text-red-500" : ""}`}
+          />
+        </button>
+      </Link>
 
       {/* Content */}
       <div className="p-4 flex flex-col gap-3 flex-1">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-display text-base font-semibold text-foreground leading-snug">
+          {/* Clickable product name */}
+          <Link
+            to="/product/$productId"
+            params={{ productId: idStr }}
+            data-ocid={`shop.product_name_link.${index}`}
+            className="font-display text-base font-semibold text-foreground leading-snug hover:text-primary transition-colors duration-150"
+          >
             {product.name}
-          </h3>
+          </Link>
           <Badge
             variant="secondary"
             className="shrink-0 text-xs bg-secondary/20 text-secondary-foreground border-0"
@@ -92,6 +149,27 @@ export function ProductCard({ product, index }: ProductCardProps) {
             {product.category}
           </Badge>
         </div>
+
+        {/* Star rating (if reviews exist) */}
+        {avgRating !== null && (
+          <div className="flex items-center gap-1.5 -mt-1">
+            <span className="flex items-center gap-0.5">
+              {[1, 2, 3, 4, 5].map((s) => (
+                <Star
+                  key={s}
+                  className={`w-3 h-3 ${
+                    s <= Math.round(avgRating)
+                      ? "text-amber-400 fill-amber-400"
+                      : "text-muted-foreground/30"
+                  }`}
+                />
+              ))}
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {avgRating.toFixed(1)}
+            </span>
+          </div>
+        )}
 
         <p className="text-sm text-muted-foreground leading-relaxed flex-1 line-clamp-2">
           {product.description}

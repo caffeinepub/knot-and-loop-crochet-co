@@ -153,17 +153,7 @@ export function RazorpayBilling() {
         >
           <button
             type="button"
-            onClick={() =>
-              navigate({
-                to: "/payment-select",
-                search: {
-                  mode: "buynow",
-                  productName,
-                  price: String(priceRaw),
-                  description,
-                },
-              })
-            }
+            onClick={() => window.history.back()}
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors group"
             data-ocid="razorpay_billing.back_button"
           >

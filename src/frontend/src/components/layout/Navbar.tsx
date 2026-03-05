@@ -10,9 +10,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/contexts/AuthContext";
 import { useCart } from "@/contexts/CartContext";
+import { useWishlist } from "@/contexts/WishlistContext";
 import { Link, useLocation } from "@tanstack/react-router";
 import {
   ClipboardList,
+  Heart,
   Loader2,
   LogIn,
   LogOut,
@@ -28,10 +30,12 @@ const navLinks = [
   { label: "Shop", to: "/shop", ocid: "nav.shop_link" },
   { label: "About", to: "/about", ocid: "nav.about_link" },
   { label: "Contact", to: "/contact", ocid: "nav.contact_link" },
+  { label: "FAQ", to: "/faq", ocid: "nav.faq_link" },
 ];
 
 export function Navbar() {
   const { totalItems } = useCart();
+  const { wishlistCount } = useWishlist();
   const { isLoggedIn, isInitializing, logout, principal, openLoginModal } =
     useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -54,7 +58,7 @@ export function Navbar() {
             data-ocid="nav.home_link"
           >
             <span className="font-display text-xl font-bold text-primary leading-none tracking-tight group-hover:opacity-80 transition-opacity">
-              Knot & Loop
+              Knot &amp; Loop
             </span>
           </Link>
 
@@ -92,8 +96,28 @@ export function Navbar() {
             })}
           </ul>
 
-          {/* Cart + Auth + Mobile Toggle */}
-          <div className="flex items-center gap-2">
+          {/* Wishlist + Cart + Auth + Mobile Toggle */}
+          <div className="flex items-center gap-1">
+            {/* Wishlist button */}
+            <Link
+              to="/wishlist"
+              data-ocid="nav.wishlist_button"
+              className="relative p-2 rounded-full hover:bg-muted transition-colors duration-200"
+              aria-label={`Wishlist — ${wishlistCount} item${wishlistCount !== 1 ? "s" : ""}`}
+            >
+              <Heart className="w-5 h-5 text-foreground/80" />
+              {wishlistCount > 0 && (
+                <motion.span
+                  key={wishlistCount}
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none"
+                >
+                  {wishlistCount > 9 ? "9+" : wishlistCount}
+                </motion.span>
+              )}
+            </Link>
+
             {/* Cart button */}
             <button
               type="button"
@@ -227,6 +251,24 @@ export function Navbar() {
                     </li>
                   );
                 })}
+
+                {/* Mobile wishlist */}
+                <li>
+                  <Link
+                    to="/wishlist"
+                    data-ocid="nav.wishlist_button"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-medium text-foreground/70 hover:bg-muted hover:text-foreground transition-colors"
+                  >
+                    <Heart className="w-4 h-4" />
+                    Wishlist
+                    {wishlistCount > 0 && (
+                      <span className="ml-auto text-xs bg-red-500 text-white font-bold px-1.5 py-0.5 rounded-full">
+                        {wishlistCount}
+                      </span>
+                    )}
+                  </Link>
+                </li>
 
                 {/* Mobile auth */}
                 {isLoggedIn ? (

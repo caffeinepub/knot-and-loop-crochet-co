@@ -5,6 +5,9 @@ const navLinks = [
   { label: "Shop", to: "/shop" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
+  { label: "FAQ", to: "/faq" },
+  { label: "Returns Policy", to: "/returns" },
+  { label: "Track Order", to: "/track-order" },
 ];
 
 export function Footer() {
@@ -17,7 +20,7 @@ export function Footer() {
           {/* Brand */}
           <div className="text-center md:text-left">
             <p className="font-display text-2xl font-bold text-primary mb-2">
-              Knot & Loop
+              Knot &amp; Loop
             </p>
             <p className="text-sm text-muted-foreground max-w-xs leading-relaxed">
               Handmade crochet goods made with love, one stitch at a time.

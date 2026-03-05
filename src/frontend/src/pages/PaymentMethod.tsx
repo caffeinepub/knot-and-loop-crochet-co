@@ -1,19 +1,16 @@
 import { useCart } from "@/contexts/CartContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
-import { useCreateCheckoutSession } from "@/hooks/useCreateCheckoutSession";
 import { productImages } from "@/lib/productImages";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
   ArrowLeft,
   CheckCircle2,
   CreditCard,
-  Loader2,
   ShoppingBag,
   Smartphone,
 } from "lucide-react";
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useEffect } from "react";
 
 // ── Step indicator ──
 function StepIndicator({ currentStep }: { currentStep: number }) {
@@ -284,9 +281,75 @@ const paymentOptions: PaymentOption[] = [
 ];
 
 // ── Order summary ──
-function OrderSummary() {
+interface OrderSummaryProps {
+  isBuyNow?: boolean;
+  buyNowProductName?: string;
+  buyNowPrice?: number;
+  buyNowDescription?: string;
+}
+
+function OrderSummary({
+  isBuyNow = false,
+  buyNowProductName = "",
+  buyNowPrice = 0,
+  buyNowDescription = "",
+}: OrderSummaryProps) {
   const { items, totalPrice } = useCart();
   const { formatPrice } = useCurrency();
+
+  if (isBuyNow) {
+    const imgSrc = productImages[buyNowProductName];
+    return (
+      <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-warm">
+        <div className="px-5 py-4 border-b border-border/60">
+          <h2 className="font-display text-base font-bold text-foreground">
+            Order Summary
+          </h2>
+        </div>
+        <ul className="divide-y divide-border/50">
+          <li className="flex items-center gap-3 px-5 py-3">
+            <div className="w-12 h-12 rounded-lg overflow-hidden bg-muted flex-shrink-0">
+              {imgSrc ? (
+                <img
+                  src={imgSrc}
+                  alt={buyNowProductName}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <ShoppingBag className="w-5 h-5 text-muted-foreground" />
+                </div>
+              )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-foreground line-clamp-1">
+                {buyNowProductName}
+              </p>
+              {buyNowDescription && (
+                <p className="text-xs text-muted-foreground line-clamp-1">
+                  {buyNowDescription}
+                </p>
+              )}
+              <p className="text-xs text-muted-foreground">Qty: 1</p>
+            </div>
+            <span className="text-sm font-semibold text-foreground tabular-nums">
+              {formatPrice(buyNowPrice)}
+            </span>
+          </li>
+        </ul>
+        <div className="px-5 py-4 border-t border-border bg-muted/30">
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium text-muted-foreground">
+              Total
+            </span>
+            <span className="font-display text-lg font-bold text-primary">
+              {formatPrice(buyNowPrice)}
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-warm">
@@ -349,43 +412,46 @@ function OrderSummary() {
 export function PaymentMethod() {
   const navigate = useNavigate();
   const { items } = useCart();
-  const createCheckoutSession = useCreateCheckoutSession();
-  const [loadingMethod, setLoadingMethod] = useState<string | null>(null);
 
-  // Redirect to shop if cart is empty
+  // Read optional buy-now params from URL
+  const search = useSearch({ strict: false }) as {
+    mode?: string;
+    productName?: string;
+    price?: string;
+    description?: string;
+  };
+
+  const isBuyNow = search.mode === "buynow";
+  const buyNowProductName = search.productName ?? "";
+  const buyNowPrice = Number.parseFloat(search.price ?? "0");
+  const buyNowDescription = search.description ?? "";
+
+  // For cart mode: redirect to shop if cart is empty and not buy-now
   useEffect(() => {
-    if (items.length === 0) {
+    if (!isBuyNow && items.length === 0) {
       navigate({ to: "/shop" });
     }
-  }, [items.length, navigate]);
+  }, [isBuyNow, items.length, navigate]);
 
-  const handleSelect = async (methodId: string) => {
-    sessionStorage.setItem("selectedPaymentMethod", methodId);
-    setLoadingMethod(methodId);
-
-    const shoppingItems = items.map((item) => ({
-      currency: "usd",
-      productName: item.product.name,
-      productDescription: item.product.description,
-      priceInCents: BigInt(Math.round(item.product.price * 100)),
-      quantity: BigInt(item.quantity),
-    }));
-
-    try {
-      const session = await createCheckoutSession.mutateAsync(shoppingItems);
-      window.location.href = session.url;
-    } catch (err) {
-      setLoadingMethod(null);
-      toast.error("Checkout failed. Please try again.", {
-        description:
-          err instanceof Error ? err.message : "An unexpected error occurred.",
+  const handleSelect = (_methodId: string) => {
+    if (isBuyNow) {
+      // For buy-now: proceed to billing with the same product params
+      navigate({
+        to: "/billing",
+        search: {
+          mode: "buynow",
+          productName: buyNowProductName,
+          price: String(buyNowPrice),
+          description: buyNowDescription,
+        },
       });
+    } else {
+      // For cart: proceed to billing
+      navigate({ to: "/billing" });
     }
   };
 
-  if (items.length === 0) return null;
-
-  const isLoading = loadingMethod !== null;
+  if (!isBuyNow && items.length === 0) return null;
 
   return (
     <main
@@ -397,8 +463,7 @@ export function PaymentMethod() {
         <button
           type="button"
           onClick={() => window.history.back()}
-          disabled={isLoading}
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8 group disabled:opacity-50 disabled:pointer-events-none"
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8 group"
           data-ocid="payment_method.back_button"
         >
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
@@ -421,63 +486,40 @@ export function PaymentMethod() {
               Choose Payment Method
             </h1>
             <p className="text-muted-foreground text-sm mb-7">
-              Select how you'd like to pay and you'll be redirected to complete
-              your payment.
+              Select your preferred payment method to continue.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {paymentOptions.map((option, idx) => {
-                const isThisLoading = loadingMethod === option.id;
-                return (
-                  <motion.button
-                    key={option.id}
-                    type="button"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: idx * 0.07, duration: 0.35 }}
-                    onClick={() => !isLoading && handleSelect(option.id)}
-                    disabled={isLoading}
-                    className={`group text-left w-full bg-card border-2 rounded-2xl p-5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98] ${
-                      isThisLoading
-                        ? "border-primary shadow-warm scale-[0.99]"
-                        : isLoading
-                          ? "border-border opacity-50 cursor-not-allowed"
-                          : "border-border hover:border-primary hover:shadow-warm"
-                    }`}
-                    data-ocid={`payment_method.card.${idx + 1}`}
-                  >
-                    <div className="flex items-start gap-3 mb-3">
-                      <div
-                        className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${isThisLoading ? "bg-primary/15" : "bg-primary/10 group-hover:bg-primary/15"}`}
-                      >
-                        {isThisLoading ? (
-                          <Loader2 className="w-5 h-5 text-primary animate-spin" />
-                        ) : (
-                          option.icon
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0 pt-0.5">
-                        <p className="font-display font-bold text-foreground text-sm leading-tight mb-0.5">
-                          {option.label}
-                        </p>
-                        <p className="text-xs text-muted-foreground leading-snug">
-                          {isThisLoading
-                            ? "Redirecting to payment…"
-                            : option.description}
-                        </p>
-                      </div>
+              {paymentOptions.map((option, idx) => (
+                <motion.button
+                  key={option.id}
+                  type="button"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.07, duration: 0.35 }}
+                  onClick={() => handleSelect(option.id)}
+                  className="group text-left w-full bg-card border-2 border-border hover:border-primary hover:shadow-warm rounded-2xl p-5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.98]"
+                  data-ocid={`payment_method.card.${idx + 1}`}
+                >
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors bg-primary/10 group-hover:bg-primary/15">
+                      {option.icon}
                     </div>
-                    <div className="flex items-center justify-between">
-                      {option.badges}
-                      {isThisLoading ? (
-                        <Loader2 className="w-4 h-4 text-primary animate-spin ml-2 flex-shrink-0" />
-                      ) : (
-                        <ArrowLeft className="w-4 h-4 text-primary rotate-180 opacity-0 group-hover:opacity-100 transition-opacity ml-2 flex-shrink-0" />
-                      )}
+                    <div className="flex-1 min-w-0 pt-0.5">
+                      <p className="font-display font-bold text-foreground text-sm leading-tight mb-0.5">
+                        {option.label}
+                      </p>
+                      <p className="text-xs text-muted-foreground leading-snug">
+                        {option.description}
+                      </p>
                     </div>
-                  </motion.button>
-                );
-              })}
+                  </div>
+                  <div className="flex items-center justify-between">
+                    {option.badges}
+                    <ArrowLeft className="w-4 h-4 text-primary rotate-180 opacity-0 group-hover:opacity-100 transition-opacity ml-2 flex-shrink-0" />
+                  </div>
+                </motion.button>
+              ))}
             </div>
 
             <p className="mt-6 text-xs text-muted-foreground flex items-center gap-1.5">
@@ -496,7 +538,7 @@ export function PaymentMethod() {
                   d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                 />
               </svg>
-              Your payment information is secured with SSL encryption
+              Your order information is kept safe and secure
             </p>
           </motion.div>
 
@@ -507,7 +549,12 @@ export function PaymentMethod() {
             transition={{ delay: 0.15, duration: 0.4 }}
             className="lg:sticky lg:top-8 self-start"
           >
-            <OrderSummary />
+            <OrderSummary
+              isBuyNow={isBuyNow}
+              buyNowProductName={buyNowProductName}
+              buyNowPrice={buyNowPrice}
+              buyNowDescription={buyNowDescription}
+            />
           </motion.div>
         </div>
       </div>

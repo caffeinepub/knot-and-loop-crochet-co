@@ -1,8 +1,9 @@
-import type { Product } from "@/backend.d";
 import { ProductCard } from "@/components/ProductCard";
+import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetProducts } from "@/hooks/useQueries";
-import { PackageSearch } from "lucide-react";
+import { sampleProducts } from "@/lib/products";
+import { PackageSearch, Search, X } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
 
@@ -16,165 +17,27 @@ const tabOcids: Record<Category, string> = {
   Accessories: "shop.accessories_tab",
 };
 
-// Fallback sample products
-const sampleProducts: Product[] = [
-  {
-    id: BigInt(1),
-    name: "Sunburst Market Bag",
-    description:
-      "A roomy hand-crocheted market tote in warm terracotta tones, sturdy enough for farmers' markets.",
-    category: "Bags",
-    price: 1.0,
-  },
-  {
-    id: BigInt(2),
-    name: "Coastal Weave Tote",
-    description:
-      "A breezy open-weave tote in mustard yellow — perfect for the beach or brunch.",
-    category: "Bags",
-    price: 1.0,
-  },
-  {
-    id: BigInt(3),
-    name: "Lavender Mini Crossbody",
-    description:
-      "A cute little crossbody in soft lavender with a braided strap and tassel detail.",
-    category: "Bags",
-    price: 1.0,
-  },
-  {
-    id: BigInt(4),
-    name: "Sage Coin Pouch",
-    description:
-      "A compact zippered pouch in sage green with a wrist loop — great for essentials.",
-    category: "Pouches",
-    price: 1.0,
-  },
-  {
-    id: BigInt(5),
-    name: "Terracotta Card Wallet",
-    description:
-      "A slim hand-stitched card wallet in terracotta, holds cards and cash effortlessly.",
-    category: "Pouches",
-    price: 1.0,
-  },
-  {
-    id: BigInt(6),
-    name: "Sunset Bucket Bag",
-    description:
-      "A roomy crochet bucket bag in warm sunset tones with a drawstring closure and braided handles.",
-    category: "Bags",
-    price: 1.0,
-  },
-  {
-    id: BigInt(7),
-    name: "Boho Fringe Tote",
-    description:
-      "A stylish fringed tote in earthy brown and cream with extra-wide straps — great for everyday use.",
-    category: "Bags",
-    price: 1.0,
-  },
-  {
-    id: BigInt(8),
-    name: "Petal Zipper Pouch",
-    description:
-      "A charming crochet pouch with a floral petal stitch in blush pink — fits makeup, coins, or trinkets.",
-    category: "Pouches",
-    price: 1.0,
-  },
-  {
-    id: BigInt(9),
-    name: "Mustard Wristlet Pouch",
-    description:
-      "A compact wristlet pouch in mustard yellow with a secure zip and adjustable loop strap.",
-    category: "Pouches",
-    price: 1.0,
-  },
-  {
-    id: BigInt(14),
-    name: "Terracotta Dreamcatcher",
-    description:
-      "A handcrafted crochet dreamcatcher in terracotta and cream with delicate feather tassels — beautiful wall decor.",
-    category: "Accessories",
-    price: 1.0,
-  },
-  {
-    id: BigInt(15),
-    name: "Sage Boho Dreamcatcher",
-    description:
-      "An intricate sage green crochet dreamcatcher with wooden beads and fringe — perfect for any boho space.",
-    category: "Accessories",
-    price: 1.0,
-  },
-  {
-    id: BigInt(16),
-    name: "Flower Crochet Keychain",
-    description:
-      "A sweet crochet flower keychain in pastel tones — a handmade charm for bags, keys, or gifts.",
-    category: "Accessories",
-    price: 1.0,
-  },
-  {
-    id: BigInt(17),
-    name: "Rainbow Mini Keychain",
-    description:
-      "A cheerful mini crochet rainbow keychain in vibrant colors — a tiny handmade touch of joy.",
-    category: "Accessories",
-    price: 1.0,
-  },
-  {
-    id: BigInt(10),
-    name: "Blossom Crochet Pouch",
-    description:
-      "A sweet pastel crochet pouch with a zipper and decorative stitch pattern — great for makeup or trinkets.",
-    category: "Accessories",
-    price: 1.0,
-  },
-  {
-    id: BigInt(11),
-    name: "Petal Crochet Hairband",
-    description:
-      "A stretchy crochet hairband in blush pink with a delicate flower detail — handmade and hair-friendly.",
-    category: "Accessories",
-    price: 1.0,
-  },
-  {
-    id: BigInt(12),
-    name: "Boho Crochet Dreamcatcher",
-    description:
-      "A handcrafted crochet dreamcatcher in terracotta and sage, with feathers and an intricate yarn web — perfect wall decor.",
-    category: "Accessories",
-    price: 1.0,
-  },
-  {
-    id: BigInt(13),
-    name: "Mini Crochet Keychain",
-    description:
-      "A tiny crochet charm keychain in mustard yellow — a cute handmade accent for your keys or bag.",
-    category: "Accessories",
-    price: 1.0,
-  },
-  {
-    id: BigInt(18),
-    name: "Rose Shell Hairband",
-    description:
-      "A stretchy crochet hairband in soft rose pink with a delicate shell stitch pattern — handmade and gentle on hair.",
-    category: "Accessories",
-    price: 1.0,
-  },
-];
-
 export function Shop() {
   const [activeCategory, setActiveCategory] = useState<Category>("All");
+  const [searchQuery, setSearchQuery] = useState("");
   const { data: products, isLoading } = useGetProducts();
 
   const allProducts =
     products && products.length > 0 ? products : sampleProducts;
 
-  const filtered =
-    activeCategory === "All"
-      ? allProducts
-      : allProducts.filter((p) => p.category === activeCategory);
+  // Filter by category then by search
+  const filtered = allProducts.filter((p) => {
+    const matchesCategory =
+      activeCategory === "All" || p.category === activeCategory;
+    const q = searchQuery.trim().toLowerCase();
+    const matchesSearch =
+      !q ||
+      p.name.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q);
+    return matchesCategory && matchesSearch;
+  });
+
+  const hasSearch = searchQuery.trim().length > 0;
 
   return (
     <main className="min-h-screen">
@@ -198,6 +61,35 @@ export function Shop() {
 
       {/* Filter tabs + grid */}
       <section className="py-10 px-4 container mx-auto max-w-6xl">
+        {/* Search bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="relative mb-6 max-w-lg"
+        >
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+          <Input
+            type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search products…"
+            className="pl-10 pr-10 rounded-full h-11 border-border/80 focus:border-primary bg-card"
+            data-ocid="shop.search_input"
+          />
+          {hasSearch && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full hover:bg-muted transition-colors"
+              aria-label="Clear search"
+              data-ocid="shop.clear_search_button"
+            >
+              <X className="w-3.5 h-3.5 text-muted-foreground" />
+            </button>
+          )}
+        </motion.div>
+
         {/* Category filters */}
         <div className="flex flex-wrap gap-2 mb-10">
           {CATEGORIES.map((cat) => (
@@ -216,6 +108,19 @@ export function Shop() {
             </button>
           ))}
         </div>
+
+        {/* Search feedback */}
+        {hasSearch && !isLoading && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-sm text-muted-foreground mb-6"
+          >
+            {filtered.length > 0
+              ? `${filtered.length} result${filtered.length !== 1 ? "s" : ""} for "${searchQuery}"`
+              : null}
+          </motion.p>
+        )}
 
         {/* Loading skeletons */}
         {isLoading && (
@@ -241,11 +146,25 @@ export function Shop() {
               <PackageSearch className="w-9 h-9 text-muted-foreground" />
             </div>
             <h3 className="font-display text-xl font-semibold text-foreground mb-2">
-              No items in this category yet
+              {hasSearch
+                ? `No results for "${searchQuery}"`
+                : "No items in this category yet"}
             </h3>
             <p className="text-muted-foreground text-sm">
-              Check back soon — we're always making new things!
+              {hasSearch
+                ? "Try a different search term or browse all categories."
+                : "Check back soon — we're always making new things!"}
             </p>
+            {hasSearch && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery("")}
+                className="mt-4 text-sm text-primary hover:underline underline-offset-2"
+                data-ocid="shop.clear_search_link"
+              >
+                Clear search
+              </button>
+            )}
           </div>
         )}
 

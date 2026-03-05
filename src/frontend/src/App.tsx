@@ -4,20 +4,24 @@ import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
+import { WishlistProvider } from "@/contexts/WishlistContext";
 import { InternetIdentityProvider } from "@/hooks/useInternetIdentity";
 import { About } from "@/pages/About";
 import { Billing } from "@/pages/Billing";
-import { CartRazorpayBilling } from "@/pages/CartRazorpayBilling";
 import { Contact } from "@/pages/Contact";
+import { FAQ } from "@/pages/FAQ";
 import { Home } from "@/pages/Home";
+import { OrderConfirmation } from "@/pages/OrderConfirmation";
 import { Orders } from "@/pages/Orders";
 import { PaymentFailure } from "@/pages/PaymentFailure";
 import { PaymentMethod } from "@/pages/PaymentMethod";
-import { PaymentSelect } from "@/pages/PaymentSelect";
 import { PaymentSuccess } from "@/pages/PaymentSuccess";
-import { RazorpayBilling } from "@/pages/RazorpayBilling";
+import { ProductDetail } from "@/pages/ProductDetail";
+import { ReturnsPolicy } from "@/pages/ReturnsPolicy";
 import { Shop } from "@/pages/Shop";
 import { ThankYou } from "@/pages/ThankYou";
+import { TrackOrder } from "@/pages/TrackOrder";
+import { Wishlist } from "@/pages/Wishlist";
 import {
   Outlet,
   RouterProvider,
@@ -33,14 +37,16 @@ const rootRoute = createRootRoute({
       <CurrencyProvider>
         <AuthProvider>
           <CartProvider>
-            <div className="min-h-screen flex flex-col">
-              <Navbar />
-              <div className="flex-1">
-                <Outlet />
+            <WishlistProvider>
+              <div className="min-h-screen flex flex-col">
+                <Navbar />
+                <div className="flex-1">
+                  <Outlet />
+                </div>
+                <Footer />
               </div>
-              <Footer />
-            </div>
-            <Toaster richColors position="top-right" />
+              <Toaster richColors position="top-right" />
+            </WishlistProvider>
           </CartProvider>
         </AuthProvider>
       </CurrencyProvider>
@@ -109,22 +115,41 @@ const thankYouRoute = createRoute({
   component: ThankYou,
 });
 
-const razorpayBillingRoute = createRoute({
+const orderConfirmationRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/razorpay-billing",
-  component: RazorpayBilling,
+  path: "/order-confirmation",
+  component: OrderConfirmation,
 });
 
-const cartRazorpayBillingRoute = createRoute({
+// ── New routes ──
+const productDetailRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/cart-razorpay-billing",
-  component: CartRazorpayBilling,
+  path: "/product/$productId",
+  component: ProductDetail,
 });
 
-const paymentSelectRoute = createRoute({
+const faqRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/payment-select",
-  component: PaymentSelect,
+  path: "/faq",
+  component: FAQ,
+});
+
+const returnsPolicyRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/returns",
+  component: ReturnsPolicy,
+});
+
+const wishlistRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/wishlist",
+  component: Wishlist,
+});
+
+const trackOrderRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/track-order",
+  component: TrackOrder,
 });
 
 const routeTree = rootRoute.addChildren([
@@ -138,9 +163,12 @@ const routeTree = rootRoute.addChildren([
   paymentMethodRoute,
   billingRoute,
   thankYouRoute,
-  razorpayBillingRoute,
-  cartRazorpayBillingRoute,
-  paymentSelectRoute,
+  orderConfirmationRoute,
+  productDetailRoute,
+  faqRoute,
+  returnsPolicyRoute,
+  wishlistRoute,
+  trackOrderRoute,
 ]);
 
 const router = createRouter({ routeTree });

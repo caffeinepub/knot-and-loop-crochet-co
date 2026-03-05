@@ -1,42 +1,10 @@
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { useGetProducts } from "@/hooks/useQueries";
+import { sampleProducts } from "@/lib/products";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Leaf, Package, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
-
-// Fallback sample products for when backend has no data
-const sampleProducts = [
-  {
-    id: BigInt(1),
-    name: "Sunburst Market Bag",
-    description: "A roomy hand-crocheted market bag in warm terracotta tones.",
-    category: "Bags",
-    price: 48.0,
-  },
-  {
-    id: BigInt(2),
-    name: "Sage Coin Pouch",
-    description: "A compact zippered pouch in sage green with a wrist loop.",
-    category: "Pouches",
-    price: 22.0,
-  },
-  {
-    id: BigInt(3),
-    name: "Rosy Bucket Hat",
-    description:
-      "A floppy crochet bucket hat in dusty rose, perfect for sunny days.",
-    category: "Hats",
-    price: 36.0,
-  },
-  {
-    id: BigInt(4),
-    name: "Stripe Weekend Scarf",
-    description: "Cozy terracotta and cream striped scarf with fringe ends.",
-    category: "Scarves",
-    price: 44.0,
-  },
-];
 
 const features = [
   {
@@ -58,9 +26,11 @@ const features = [
 
 export function Home() {
   const { data: products, isLoading } = useGetProducts();
-  const displayProducts = (
-    products && products.length > 0 ? products : sampleProducts
-  ).slice(0, 4);
+  const allProducts =
+    products && products.length > 0 ? products : sampleProducts;
+
+  const newArrivals = allProducts.slice(0, 4);
+  const favourites = allProducts.slice(0, 4);
 
   return (
     <main>
@@ -113,7 +83,8 @@ export function Home() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg sm:text-xl text-primary-foreground/85 max-w-xl mx-auto mb-8 leading-relaxed"
           >
-            Unique crochet bags &amp; accessories made just for you.
+            Unique crochet pouches, hairbands &amp; accessories — handcrafted
+            just for you.
           </motion.p>
 
           <motion.div
@@ -153,7 +124,7 @@ export function Home() {
         </div>
       </section>
 
-      {/* ── Our Favourites ── */}
+      {/* ── New Arrivals ── */}
       <section className="py-20 px-4 container mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -162,11 +133,15 @@ export function Home() {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
+          <div className="inline-flex items-center gap-2 mb-3 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium">
+            <Sparkles className="w-3.5 h-3.5" />
+            Just Dropped
+          </div>
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-3">
-            Our Favourites
+            New Arrivals
           </h2>
           <p className="text-muted-foreground max-w-md mx-auto">
-            A curated selection of our most-loved handmade pieces.
+            Fresh handmade pieces — just dropped and ready to love.
           </p>
         </motion.div>
 
@@ -181,35 +156,83 @@ export function Home() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {displayProducts.map((product, i) => (
-              <ProductCard
-                key={product.id.toString()}
-                product={product}
-                index={i + 1}
-              />
+            {newArrivals.map((product, i) => (
+              <div key={product.id.toString()} className="relative">
+                {/* New badge overlay */}
+                <div
+                  className="absolute top-2.5 left-2.5 z-20 pointer-events-none"
+                  aria-hidden="true"
+                >
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary text-primary-foreground text-[11px] font-bold tracking-wide shadow-sm">
+                    ✦ NEW
+                  </span>
+                </div>
+                <ProductCard product={product} index={i + 1} />
+              </div>
             ))}
           </div>
         )}
+      </section>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="text-center mt-10"
-        >
-          <Button
-            asChild
-            variant="outline"
-            size="lg"
-            className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 transition-all duration-300"
+      {/* ── Our Favourites ── */}
+      <section className="py-20 px-4 bg-muted/30">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12"
           >
-            <Link to="/shop">
-              See All Products
-              <ArrowRight className="ml-2 w-4 h-4" />
-            </Link>
-          </Button>
-        </motion.div>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-3">
+              Our Favourites
+            </h2>
+            <p className="text-muted-foreground max-w-md mx-auto">
+              A curated selection of our most-loved handmade pieces.
+            </p>
+          </motion.div>
+
+          {isLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {(["sk1", "sk2", "sk3", "sk4"] as const).map((k) => (
+                <div
+                  key={k}
+                  className="bg-muted rounded-2xl animate-pulse aspect-[3/4]"
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {favourites.map((product, i) => (
+                <ProductCard
+                  key={product.id.toString()}
+                  product={product}
+                  index={i + 1}
+                />
+              ))}
+            </div>
+          )}
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="text-center mt-10"
+          >
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 transition-all duration-300"
+            >
+              <Link to="/shop">
+                See All Products
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </Link>
+            </Button>
+          </motion.div>
+        </div>
       </section>
 
       {/* ── Why Knot & Loop ── */}
@@ -256,7 +279,7 @@ export function Home() {
       </section>
 
       {/* ── Quote Banner ── */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 bg-muted/30">
         <motion.div
           initial={{ opacity: 0, scale: 0.97 }}
           whileInView={{ opacity: 1, scale: 1 }}

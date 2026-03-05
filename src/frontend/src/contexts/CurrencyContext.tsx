@@ -14,54 +14,54 @@ interface CurrencyContextValue {
 
 const CurrencyContext = createContext<CurrencyContextValue | null>(null);
 
-// Approximate USD exchange rates (updated periodically — good enough for display)
-const USD_RATES: Record<string, number> = {
-  USD: 1,
-  INR: 83.5,
-  EUR: 0.92,
-  GBP: 0.79,
-  CAD: 1.36,
-  AUD: 1.53,
-  JPY: 149.5,
-  CNY: 7.24,
-  BRL: 4.97,
-  MXN: 17.1,
-  SGD: 1.34,
-  AED: 3.67,
-  SAR: 3.75,
-  ZAR: 18.6,
-  KRW: 1325,
-  IDR: 15600,
-  MYR: 4.7,
-  THB: 35.1,
-  PKR: 278,
-  BDT: 110,
-  LKR: 315,
-  NPR: 133,
-  NGN: 1550,
-  GHS: 15.8,
-  KES: 129,
-  EGP: 48.5,
-  TRY: 32.5,
-  RUB: 90,
-  CHF: 0.89,
-  SEK: 10.4,
-  NOK: 10.6,
-  DKK: 6.88,
-  PLN: 3.97,
-  CZK: 22.9,
-  HUF: 355,
-  RON: 4.57,
-  ILS: 3.74,
-  CLP: 940,
-  COP: 3930,
-  PEN: 3.72,
-  ARS: 855,
-  VND: 24500,
-  PHP: 56.5,
-  NZD: 1.64,
-  HKD: 7.82,
-  TWD: 32.1,
+// Approximate INR exchange rates (base currency: INR)
+const INR_RATES: Record<string, number> = {
+  INR: 1,
+  USD: 0.012,
+  EUR: 0.011,
+  GBP: 0.0095,
+  CAD: 0.0163,
+  AUD: 0.0184,
+  JPY: 1.79,
+  CNY: 0.0868,
+  BRL: 0.0596,
+  MXN: 0.205,
+  SGD: 0.0161,
+  AED: 0.044,
+  SAR: 0.045,
+  ZAR: 0.223,
+  KRW: 15.87,
+  IDR: 186.9,
+  MYR: 0.0563,
+  THB: 0.421,
+  PKR: 3.33,
+  BDT: 1.32,
+  LKR: 3.77,
+  NPR: 1.59,
+  NGN: 18.57,
+  GHS: 0.189,
+  KES: 1.55,
+  EGP: 0.581,
+  TRY: 0.389,
+  RUB: 1.08,
+  CHF: 0.0107,
+  SEK: 0.125,
+  NOK: 0.127,
+  DKK: 0.0824,
+  PLN: 0.0476,
+  CZK: 0.274,
+  HUF: 4.25,
+  RON: 0.0548,
+  ILS: 0.0448,
+  CLP: 11.26,
+  COP: 47.1,
+  PEN: 0.0446,
+  ARS: 10.24,
+  VND: 293.6,
+  PHP: 0.677,
+  NZD: 0.0197,
+  HKD: 0.0937,
+  TWD: 0.385,
 };
 
 // Country -> currency code
@@ -157,7 +157,7 @@ function getCurrencySymbol(code: string): string {
 }
 
 export function CurrencyProvider({ children }: { children: ReactNode }) {
-  const [currencyCode, setCurrencyCode] = useState<string>("USD");
+  const [currencyCode, setCurrencyCode] = useState<string>("INR");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -168,9 +168,9 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const formatPrice = (usdPrice: number): string => {
-    const rate = USD_RATES[currencyCode] ?? 1;
-    const localPrice = usdPrice * rate;
+  const formatPrice = (inrPrice: number): string => {
+    const rate = INR_RATES[currencyCode] ?? INR_RATES.USD ?? 0.012;
+    const localPrice = inrPrice * rate;
 
     try {
       return new Intl.NumberFormat(undefined, {
