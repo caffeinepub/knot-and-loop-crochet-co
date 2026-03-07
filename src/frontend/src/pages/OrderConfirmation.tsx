@@ -186,7 +186,7 @@ export function OrderConfirmation() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.44 }}
-            className="bg-green-50 rounded-2xl p-5 border border-green-100 text-left space-y-3"
+            className="bg-green-50 rounded-2xl p-4 sm:p-5 border border-green-100 text-left space-y-3"
           >
             <p className="text-sm font-semibold text-green-800 flex items-center gap-2">
               <SiWhatsapp className="w-4 h-4 text-green-600 flex-shrink-0" />
@@ -211,10 +211,11 @@ export function OrderConfirmation() {
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2.5 w-full rounded-full py-4 px-8 bg-[#25D366] hover:bg-[#20BD5A] active:scale-[0.98] text-white font-semibold text-base shadow-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366]/60"
+              style={{ touchAction: "manipulation" }}
+              className="inline-flex items-center justify-center gap-2.5 w-full rounded-full py-4 px-8 bg-[#25D366] hover:bg-[#20BD5A] active:scale-[0.98] text-white font-semibold text-base shadow-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366]/60 min-h-[52px]"
               data-ocid="order_confirmation.whatsapp_button"
             >
-              <SiWhatsapp className="w-5 h-5" />
+              <SiWhatsapp className="w-5 h-5 flex-shrink-0" />
               Contact us on WhatsApp to Pay
             </a>
 
@@ -222,8 +223,9 @@ export function OrderConfirmation() {
             <Button
               asChild
               variant="outline"
-              className="rounded-full border-border hover:bg-muted px-8"
+              className="w-full rounded-full border-border hover:bg-muted px-8 min-h-[48px]"
               data-ocid="order_confirmation.secondary_button"
+              style={{ touchAction: "manipulation" }}
             >
               <Link to="/shop">
                 <ShoppingBag className="w-4 h-4 mr-2" />

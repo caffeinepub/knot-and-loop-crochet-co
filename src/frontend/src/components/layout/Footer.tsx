@@ -15,7 +15,7 @@ export function Footer() {
 
   return (
     <footer className="bg-muted border-t border-border mt-auto">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl py-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl py-8 sm:py-12">
         <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-8">
           {/* Brand */}
           <div className="text-center md:text-left">

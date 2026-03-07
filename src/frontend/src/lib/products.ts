@@ -2,148 +2,201 @@ import type { Product } from "@/backend.d";
 
 // Shared products array used across Shop, Home, ProductDetail, Wishlist
 export const sampleProducts: Product[] = [
+  // Bags
   {
     id: BigInt(1),
-    name: "Sunburst Market Bag",
+    name: "Crochet Sunburst Market Bag",
     description:
-      "A roomy hand-crocheted market tote in warm terracotta tones, sturdy enough for farmers' markets. Crafted with cotton yarn for durability and a relaxed boho feel.",
+      "A roomy hand-crocheted market tote in warm terracotta tones, sturdy enough for farmers' markets. Crafted with 100% cotton yarn for durability and a relaxed boho feel.",
     category: "Bags",
-    price: 100,
+    price: 799,
   },
   {
     id: BigInt(2),
-    name: "Coastal Weave Tote",
+    name: "Crochet Coastal Weave Tote",
     description:
-      "A breezy open-weave tote in mustard yellow — perfect for the beach or brunch. The wide weave makes it lightweight yet surprisingly strong.",
+      "A breezy open-weave crochet tote in mustard yellow — perfect for the beach or brunch. The wide weave makes it lightweight yet surprisingly strong.",
     category: "Bags",
-    price: 100,
+    price: 749,
   },
   {
     id: BigInt(3),
-    name: "Lavender Mini Crossbody",
+    name: "Crochet Lavender Mini Crossbody",
     description:
-      "A cute little crossbody in soft lavender with a braided strap and tassel detail. The adjustable strap fits every frame and the zip closure keeps your essentials safe.",
+      "A cute crocheted crossbody in soft lavender with a braided strap and tassel detail. The adjustable strap fits every frame and the zip closure keeps your essentials safe.",
     category: "Bags",
-    price: 100,
-  },
-  {
-    id: BigInt(4),
-    name: "Sage Coin Pouch",
-    description:
-      "A compact zippered pouch in sage green with a wrist loop — great for essentials. The tight crochet stitch keeps even the tiniest coins secure.",
-    category: "Pouches",
-    price: 100,
-  },
-  {
-    id: BigInt(5),
-    name: "Terracotta Card Wallet",
-    description:
-      "A slim hand-stitched card wallet in terracotta, holds cards and cash effortlessly. Slip it into any pocket or clip it to your bag for easy access.",
-    category: "Pouches",
-    price: 100,
+    price: 699,
   },
   {
     id: BigInt(6),
-    name: "Sunset Bucket Bag",
+    name: "Crochet Sunset Bucket Bag",
     description:
       "A roomy crochet bucket bag in warm sunset tones with a drawstring closure and braided handles. Fits a book, wallet, and everything in between.",
     category: "Bags",
-    price: 100,
+    price: 849,
   },
   {
     id: BigInt(7),
-    name: "Boho Fringe Tote",
+    name: "Crochet Boho Fringe Tote",
     description:
-      "A stylish fringed tote in earthy brown and cream with extra-wide straps — great for everyday use. The fringe detail adds that perfect boho touch.",
+      "A stylish crocheted fringed tote in earthy brown and cream with extra-wide straps — great for everyday use. The fringe detail adds that perfect boho touch.",
     category: "Bags",
-    price: 100,
+    price: 799,
+  },
+  // Pouches
+  {
+    id: BigInt(4),
+    name: "Crochet Sage Coin Pouch",
+    description:
+      "A compact crocheted zippered pouch in sage green with a wrist loop — great for essentials. The tight crochet stitch keeps even the tiniest coins secure.",
+    category: "Pouches",
+    price: 299,
+  },
+  {
+    id: BigInt(5),
+    name: "Crochet Terracotta Card Wallet",
+    description:
+      "A slim hand-crocheted card wallet in terracotta, holds cards and cash effortlessly. Slip it into any pocket or clip it to your bag for easy access.",
+    category: "Pouches",
+    price: 349,
   },
   {
     id: BigInt(8),
-    name: "Petal Zipper Pouch",
+    name: "Crochet Petal Zipper Pouch",
     description:
       "A charming crochet pouch with a floral petal stitch in blush pink — fits makeup, coins, or trinkets. Each petal is individually crafted for texture and beauty.",
     category: "Pouches",
-    price: 100,
+    price: 329,
   },
   {
     id: BigInt(9),
-    name: "Mustard Wristlet Pouch",
+    name: "Crochet Mustard Wristlet Pouch",
     description:
-      "A compact wristlet pouch in mustard yellow with a secure zip and adjustable loop strap. The warm mustard hue pairs with almost any outfit.",
+      "A compact crocheted wristlet pouch in mustard yellow with a secure zip and adjustable loop strap. The warm mustard hue pairs with almost any outfit.",
     category: "Pouches",
-    price: 100,
-  },
-  {
-    id: BigInt(14),
-    name: "Terracotta Dreamcatcher",
-    description:
-      "A handcrafted crochet dreamcatcher in terracotta and cream with delicate feather tassels — beautiful wall decor that also brings good dreams.",
-    category: "Accessories",
-    price: 100,
-  },
-  {
-    id: BigInt(15),
-    name: "Sage Boho Dreamcatcher",
-    description:
-      "An intricate sage green crochet dreamcatcher with wooden beads and fringe — perfect for any boho space. Each knot is tied with intention.",
-    category: "Accessories",
-    price: 100,
-  },
-  {
-    id: BigInt(16),
-    name: "Flower Crochet Keychain",
-    description:
-      "A sweet crochet flower keychain in pastel tones — a handmade charm for bags, keys, or gifts. Makes a wonderful little present for someone special.",
-    category: "Accessories",
-    price: 100,
-  },
-  {
-    id: BigInt(17),
-    name: "Rainbow Mini Keychain",
-    description:
-      "A cheerful mini crochet rainbow keychain in vibrant colors — a tiny handmade touch of joy. Every color of the rainbow, looped with love.",
-    category: "Accessories",
-    price: 100,
+    price: 299,
   },
   {
     id: BigInt(10),
-    name: "Blossom Crochet Pouch",
+    name: "Crochet Blossom Pouch",
     description:
-      "A sweet pastel crochet pouch with a zipper and decorative stitch pattern — great for makeup or trinkets. The blossom stitch detail makes it truly one-of-a-kind.",
-    category: "Accessories",
-    price: 100,
+      "A sweet pastel crochet pouch with a zipper and decorative blossom stitch pattern — great for makeup or trinkets. The blossom stitch detail makes it truly one-of-a-kind.",
+    category: "Pouches",
+    price: 349,
   },
+  // Hairbands
   {
     id: BigInt(11),
-    name: "Petal Crochet Hairband",
+    name: "Crochet Petal Hairband",
     description:
       "A stretchy crochet hairband in blush pink with a delicate flower detail — handmade and hair-friendly. Gentle on all hair types, beautiful on everyone.",
-    category: "Accessories",
-    price: 100,
-  },
-  {
-    id: BigInt(12),
-    name: "Boho Crochet Dreamcatcher",
-    description:
-      "A handcrafted crochet dreamcatcher in terracotta and sage, with feathers and an intricate yarn web — perfect wall decor. Brings warmth and artisan beauty to any room.",
-    category: "Accessories",
-    price: 100,
-  },
-  {
-    id: BigInt(13),
-    name: "Mini Crochet Keychain",
-    description:
-      "A tiny crochet charm keychain in mustard yellow — a cute handmade accent for your keys or bag. Compact, colorful, and crafted with care.",
-    category: "Accessories",
-    price: 100,
+    category: "Hairbands",
+    price: 199,
   },
   {
     id: BigInt(18),
-    name: "Rose Shell Hairband",
+    name: "Crochet Rose Shell Hairband",
     description:
       "A stretchy crochet hairband in soft rose pink with a delicate shell stitch pattern — handmade and gentle on hair. The shell stitch creates a beautiful, textured look.",
+    category: "Hairbands",
+    price: 199,
+  },
+  {
+    id: BigInt(19),
+    name: "Crochet Lavender Sunflower Hairband",
+    description:
+      "A stretchy crochet hairband in soft lavender with a cheerful sunflower center motif. Handmade with soft cotton yarn — gentle on hair and lovely to wear.",
+    category: "Hairbands",
+    price: 219,
+  },
+  {
+    id: BigInt(20),
+    name: "Crochet Mustard Daisy Hairband",
+    description:
+      "A bright and breezy crochet hairband in mustard yellow with a fresh daisy flower accent. Stretchy, comfortable, and a perfect pop of color for any look.",
+    category: "Hairbands",
+    price: 199,
+  },
+  {
+    id: BigInt(21),
+    name: "Crochet Sage Leaf Hairband",
+    description:
+      "A boho-inspired crochet hairband in sage green with a delicate leaf and vine pattern. Made with natural cotton yarn — soft, stretchy, and beautifully crafted.",
+    category: "Hairbands",
+    price: 219,
+  },
+  // Dreamcatchers
+  {
+    id: BigInt(14),
+    name: "Crochet Terracotta Dreamcatcher",
+    description:
+      "A handcrafted crochet dreamcatcher in terracotta and cream with delicate feather tassels — beautiful wall decor that also brings good dreams.",
+    category: "Dreamcatchers",
+    price: 499,
+  },
+  {
+    id: BigInt(15),
+    name: "Crochet Sage Boho Dreamcatcher",
+    description:
+      "An intricate sage green crochet dreamcatcher with wooden beads and fringe — perfect for any boho space. Each knot is tied with intention.",
+    category: "Dreamcatchers",
+    price: 549,
+  },
+  {
+    id: BigInt(12),
+    name: "Crochet Boho Dreamcatcher",
+    description:
+      "A handcrafted crochet dreamcatcher in terracotta and sage, with feathers and an intricate yarn web — perfect wall decor. Brings warmth and artisan beauty to any room.",
+    category: "Dreamcatchers",
+    price: 499,
+  },
+  {
+    id: BigInt(22),
+    name: "Crochet White & Gold Dreamcatcher",
+    description:
+      "An elegant crochet dreamcatcher in white and gold with an intricate web pattern, hanging feathers, and wooden beads. A stunning piece of bohemian wall art.",
+    category: "Dreamcatchers",
+    price: 599,
+  },
+  {
+    id: BigInt(23),
+    name: "Crochet Pink Cream Dreamcatcher",
+    description:
+      "A soft crochet dreamcatcher in dusty pink and cream with a delicate yarn web and pink feather tassels. Adds a romantic, dreamy touch to any room.",
+    category: "Dreamcatchers",
+    price: 549,
+  },
+  {
+    id: BigInt(24),
+    name: "Crochet Teal Fringe Dreamcatcher",
+    description:
+      "A bold crochet dreamcatcher in deep teal and turquoise with a complex web pattern, turquoise beads, and long flowing fringe. A statement piece for any wall.",
+    category: "Dreamcatchers",
+    price: 649,
+  },
+  // Keychains
+  {
+    id: BigInt(16),
+    name: "Crochet Flower Keychain",
+    description:
+      "A sweet crochet flower keychain in pastel tones — a handmade charm for bags, keys, or gifts. Makes a wonderful little present for someone special.",
     category: "Accessories",
-    price: 100,
+    price: 149,
+  },
+  {
+    id: BigInt(17),
+    name: "Crochet Rainbow Mini Keychain",
+    description:
+      "A cheerful mini crochet rainbow keychain in vibrant colors — a tiny handmade touch of joy. Every color of the rainbow, looped with love.",
+    category: "Accessories",
+    price: 149,
+  },
+  {
+    id: BigInt(13),
+    name: "Crochet Mini Keychain",
+    description:
+      "A tiny crochet charm keychain in mustard yellow — a cute handmade accent for your keys or bag. Compact, colorful, and crafted with care.",
+    category: "Accessories",
+    price: 129,
   },
 ];

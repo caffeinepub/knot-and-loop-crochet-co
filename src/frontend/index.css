@@ -101,3 +101,21 @@
     text-wrap: balance;
   }
 }
+
+/* ── Global responsive & mobile polish ── */
+html, body {
+  /* Prevent horizontal scroll at all viewport widths */
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Improve tap responsiveness site-wide — removes 300ms delay on mobile */
+a, button, [role="button"] {
+  touch-action: manipulation;
+}
+
+/* Ensure images never overflow their containers */
+img {
+  max-width: 100%;
+  height: auto;
+}

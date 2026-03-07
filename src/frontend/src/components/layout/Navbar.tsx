@@ -102,8 +102,9 @@ export function Navbar() {
             <Link
               to="/wishlist"
               data-ocid="nav.wishlist_button"
-              className="relative p-2 rounded-full hover:bg-muted transition-colors duration-200"
+              className="relative p-2.5 rounded-full hover:bg-muted transition-colors duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label={`Wishlist — ${wishlistCount} item${wishlistCount !== 1 ? "s" : ""}`}
+              style={{ touchAction: "manipulation" }}
             >
               <Heart className="w-5 h-5 text-foreground/80" />
               {wishlistCount > 0 && (
@@ -122,9 +123,10 @@ export function Navbar() {
             <button
               type="button"
               data-ocid="nav.cart_button"
-              className="relative p-2 rounded-full hover:bg-muted transition-colors duration-200"
+              className="relative p-2.5 rounded-full hover:bg-muted transition-colors duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label={`Cart — ${totalItems} item${totalItems !== 1 ? "s" : ""}`}
               onClick={() => setCartOpen(true)}
+              style={{ touchAction: "manipulation" }}
             >
               <ShoppingBag className="w-5 h-5 text-foreground/80" />
               {totalItems > 0 && (
@@ -208,9 +210,10 @@ export function Navbar() {
 
             <button
               type="button"
-              className="md:hidden p-2 rounded-full hover:bg-muted transition-colors"
+              className="md:hidden p-2.5 rounded-full hover:bg-muted transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
               onClick={() => setMobileOpen((o) => !o)}
               aria-label="Toggle menu"
+              style={{ touchAction: "manipulation" }}
             >
               {mobileOpen ? (
                 <X className="w-5 h-5" />

@@ -25,7 +25,7 @@ const PAYMENT_BADGES = [
 
 // ── 3-step indicator ──
 function StepIndicator({ currentStep }: { currentStep: number }) {
-  const steps = ["Payment", "Billing Details", "Order Confirmation"];
+  const steps = ["Payment", "Enter Details", "Order Confirmation"];
   return (
     <ol className="flex items-center gap-0 mb-8">
       {steps.map((label, idx) => {

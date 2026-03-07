@@ -117,7 +117,8 @@ export function ProductCard({ product, index }: ProductCardProps) {
           type="button"
           data-ocid={`shop.wishlist_toggle.${index}`}
           onClick={handleWishlist}
-          className={`absolute top-2.5 right-2.5 w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-200 hover:scale-110 active:scale-95 ${
+          style={{ touchAction: "manipulation" }}
+          className={`absolute top-2.5 right-2.5 w-10 h-10 rounded-full flex items-center justify-center shadow-md transition-all duration-200 hover:scale-110 active:scale-95 ${
             wishlisted
               ? "bg-red-50 text-red-500 border border-red-200"
               : "bg-white/90 text-foreground/50 border border-white/60 backdrop-blur-sm"
@@ -185,19 +186,21 @@ export function ProductCard({ product, index }: ProductCardProps) {
               variant="outline"
               onClick={handleAddToCart}
               data-ocid={`shop.add_to_cart_button.${index}`}
-              className="flex-1 rounded-full border-primary/40 text-primary hover:bg-primary/10 transition-transform duration-150 active:scale-95 text-xs"
+              style={{ touchAction: "manipulation" }}
+              className="flex-1 rounded-full border-primary/40 text-primary hover:bg-primary/10 transition-transform duration-150 active:scale-95 text-xs min-h-[40px]"
             >
-              <ShoppingBag className="w-3 h-3 mr-1" />
-              Add to Cart
+              <ShoppingBag className="w-3 h-3 mr-1 flex-shrink-0" />
+              <span className="truncate">Add to Cart</span>
             </Button>
             <Button
               size="sm"
               onClick={handleBuyNow}
               data-ocid={`shop.buy_now_button.${index}`}
-              className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full transition-transform duration-150 active:scale-95 text-xs font-semibold shadow-sm"
+              style={{ touchAction: "manipulation" }}
+              className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full transition-transform duration-150 active:scale-95 text-xs font-semibold shadow-sm min-h-[40px]"
             >
-              <Zap className="w-3 h-3 mr-1" />
-              Buy Now
+              <Zap className="w-3 h-3 mr-1 flex-shrink-0" />
+              <span className="truncate">Buy Now</span>
             </Button>
           </div>
         </div>

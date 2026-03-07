@@ -2,7 +2,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { useGetProducts } from "@/hooks/useQueries";
 import { sampleProducts } from "@/lib/products";
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { ArrowRight, Leaf, Package, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
 
@@ -26,6 +26,7 @@ const features = [
 
 export function Home() {
   const { data: products, isLoading } = useGetProducts();
+  const navigate = useNavigate();
   const allProducts =
     products && products.length > 0 ? products : sampleProducts;
 
@@ -35,7 +36,7 @@ export function Home() {
   return (
     <main>
       {/* ── Hero ── */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[80vh] sm:min-h-[90vh] flex items-center justify-center overflow-hidden">
         {/* Background image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -56,7 +57,7 @@ export function Home() {
         />
 
         {/* Hero content */}
-        <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
+        <div className="relative z-10 text-center px-4 sm:px-6 max-w-3xl mx-auto w-full">
           <motion.p
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -70,7 +71,7 @@ export function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold text-primary-foreground leading-[1.1] tracking-tight text-balance mb-6"
+            className="font-display text-3xl sm:text-5xl lg:text-7xl font-bold text-primary-foreground leading-[1.1] tracking-tight text-balance mb-5 sm:mb-6"
           >
             Handmade with Love,
             <br />
@@ -81,7 +82,7 @@ export function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg sm:text-xl text-primary-foreground/85 max-w-xl mx-auto mb-8 leading-relaxed"
+            className="text-base sm:text-xl text-primary-foreground/85 max-w-xl mx-auto mb-7 sm:mb-8 leading-relaxed"
           >
             Unique crochet pouches, hairbands &amp; accessories — handcrafted
             just for you.
@@ -93,15 +94,14 @@ export function Home() {
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             <Button
-              asChild
               size="lg"
               data-ocid="hero.shop_now_button"
-              className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 rounded-full px-8 py-6 text-base font-semibold shadow-warm-lg hover:shadow-warm transition-all duration-300 group"
+              onClick={() => navigate({ to: "/shop" })}
+              style={{ touchAction: "manipulation" }}
+              className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 rounded-full px-8 py-5 sm:py-6 text-base font-semibold shadow-warm-lg hover:shadow-warm transition-all duration-300 group min-h-[52px]"
             >
-              <Link to="/shop">
-                Shop Now
-                <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
-              </Link>
+              Shop Now
+              <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
             </Button>
           </motion.div>
         </div>
@@ -125,7 +125,7 @@ export function Home() {
       </section>
 
       {/* ── New Arrivals ── */}
-      <section className="py-20 px-4 container mx-auto max-w-6xl">
+      <section className="py-12 sm:py-20 px-4 container mx-auto max-w-6xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -146,7 +146,7 @@ export function Home() {
         </motion.div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {(["sk1", "sk2", "sk3", "sk4"] as const).map((k) => (
               <div
                 key={k}
@@ -155,7 +155,7 @@ export function Home() {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {newArrivals.map((product, i) => (
               <div key={product.id.toString()} className="relative">
                 {/* New badge overlay */}
@@ -175,7 +175,7 @@ export function Home() {
       </section>
 
       {/* ── Our Favourites ── */}
-      <section className="py-20 px-4 bg-muted/30">
+      <section className="py-12 sm:py-20 px-4 bg-muted/30">
         <div className="container mx-auto max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -193,7 +193,7 @@ export function Home() {
           </motion.div>
 
           {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {(["sk1", "sk2", "sk3", "sk4"] as const).map((k) => (
                 <div
                   key={k}
@@ -202,7 +202,7 @@ export function Home() {
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {favourites.map((product, i) => (
                 <ProductCard
                   key={product.id.toString()}
@@ -224,7 +224,8 @@ export function Home() {
               asChild
               variant="outline"
               size="lg"
-              className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 transition-all duration-300"
+              style={{ touchAction: "manipulation" }}
+              className="rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 transition-all duration-300 min-h-[48px]"
             >
               <Link to="/shop">
                 See All Products
@@ -236,7 +237,7 @@ export function Home() {
       </section>
 
       {/* ── Why Knot & Loop ── */}
-      <section className="py-20 bg-muted/50">
+      <section className="py-12 sm:py-20 bg-muted/50">
         <div className="container mx-auto px-4 max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -253,7 +254,7 @@ export function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8">
             {features.map((feature, i) => (
               <motion.div
                 key={feature.title}
@@ -279,7 +280,7 @@ export function Home() {
       </section>
 
       {/* ── Quote Banner ── */}
-      <section className="py-20 px-4 bg-muted/30">
+      <section className="py-12 sm:py-20 px-4 bg-muted/30">
         <motion.div
           initial={{ opacity: 0, scale: 0.97 }}
           whileInView={{ opacity: 1, scale: 1 }}

@@ -125,33 +125,35 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
 
                         {/* Quantity controls */}
                         <div
-                          className="flex items-center gap-1"
+                          className="flex items-center gap-1.5"
                           data-ocid={`cart.quantity_input.${ocidIndex}`}
                         >
                           <Button
                             variant="outline"
                             size="icon"
-                            className="h-6 w-6 rounded-md border-border/80 hover:bg-muted"
+                            style={{ touchAction: "manipulation" }}
+                            className="h-8 w-8 rounded-lg border-border/80 hover:bg-muted flex-shrink-0"
                             onClick={() =>
                               updateQuantity(item.product.id, item.quantity - 1)
                             }
                             aria-label="Decrease quantity"
                           >
-                            <Minus className="w-3 h-3" />
+                            <Minus className="w-3.5 h-3.5" />
                           </Button>
-                          <span className="w-6 text-center text-sm font-semibold text-foreground tabular-nums">
+                          <span className="w-7 text-center text-sm font-semibold text-foreground tabular-nums">
                             {item.quantity}
                           </span>
                           <Button
                             variant="outline"
                             size="icon"
-                            className="h-6 w-6 rounded-md border-border/80 hover:bg-muted"
+                            style={{ touchAction: "manipulation" }}
+                            className="h-8 w-8 rounded-lg border-border/80 hover:bg-muted flex-shrink-0"
                             onClick={() =>
                               updateQuantity(item.product.id, item.quantity + 1)
                             }
                             aria-label="Increase quantity"
                           >
-                            <Plus className="w-3 h-3" />
+                            <Plus className="w-3.5 h-3.5" />
                           </Button>
                         </div>
                       </div>
@@ -223,9 +225,10 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
               <Separator />
 
               <Button
-                className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-5 shadow-warm transition-all duration-200 active:scale-[0.98]"
+                className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-5 shadow-warm transition-all duration-200 active:scale-[0.98] min-h-[52px]"
                 onClick={handleCheckout}
                 data-ocid="cart.checkout_button"
+                style={{ touchAction: "manipulation" }}
               >
                 Checkout
               </Button>

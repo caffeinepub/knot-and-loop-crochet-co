@@ -11,15 +11,15 @@ import { useEffect, useState } from "react";
 
 // ── Step indicator ──
 function StepIndicator({ currentStep }: { currentStep: number }) {
-  const steps = ["Cart", "Billing Details", "Order Confirmation"];
+  const steps = ["Cart", "Enter Details", "Order Confirmation"];
   return (
-    <ol className="flex items-center gap-0">
+    <ol className="flex items-center gap-0 overflow-x-auto pb-1">
       {steps.map((label, idx) => {
         const stepNum = idx + 1;
         const isActive = stepNum === currentStep;
         const isDone = stepNum < currentStep;
         return (
-          <li key={label} className="flex items-center">
+          <li key={label} className="flex items-center flex-shrink-0">
             <div className="flex flex-col items-center">
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${
@@ -33,7 +33,7 @@ function StepIndicator({ currentStep }: { currentStep: number }) {
                 {isDone ? <CheckCircle2 className="w-4 h-4" /> : stepNum}
               </div>
               <span
-                className={`mt-1.5 text-xs font-medium whitespace-nowrap ${
+                className={`mt-1.5 text-[11px] sm:text-xs font-medium whitespace-nowrap max-w-[72px] sm:max-w-none text-center ${
                   isActive
                     ? "text-primary"
                     : isDone
@@ -46,7 +46,7 @@ function StepIndicator({ currentStep }: { currentStep: number }) {
             </div>
             {idx < steps.length - 1 && (
               <div
-                className={`h-0.5 w-12 sm:w-20 mx-2 mb-5 rounded-full transition-all duration-300 ${
+                className={`h-0.5 w-8 sm:w-16 mx-1.5 sm:mx-2 mb-5 rounded-full transition-all duration-300 ${
                   isDone ? "bg-primary" : "bg-border"
                 }`}
               />
@@ -309,6 +309,7 @@ export function Billing() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
+            className="order-2 lg:order-1"
           >
             <div className="flex items-center gap-3 mb-2">
               <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
@@ -316,7 +317,7 @@ export function Billing() {
               </div>
               <div>
                 <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground">
-                  Billing Details
+                  Enter Details
                 </h1>
                 <p className="text-muted-foreground text-sm mt-0.5">
                   We'll use these details to confirm your order via WhatsApp.
@@ -448,8 +449,9 @@ export function Billing() {
               >
                 <Button
                   type="submit"
-                  className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-5 shadow-warm transition-all duration-200 active:scale-[0.98]"
+                  className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold py-5 shadow-warm transition-all duration-200 active:scale-[0.98] min-h-[52px]"
                   data-ocid="billing.submit_button"
+                  style={{ touchAction: "manipulation" }}
                 >
                   <ShoppingBag className="w-4 h-4 mr-2" />
                   Continue to Order Confirmation
@@ -463,12 +465,12 @@ export function Billing() {
             </form>
           </motion.div>
 
-          {/* Right: order summary */}
+          {/* Right: order summary — shows first on mobile, right column on desktop */}
           <motion.div
             initial={{ opacity: 0, x: 16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.15, duration: 0.4 }}
-            className="lg:sticky lg:top-8 self-start"
+            className="order-1 lg:order-2 lg:sticky lg:top-8 self-start"
           >
             <OrderSummary
               isBuyNow={isBuyNow}

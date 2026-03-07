@@ -7,13 +7,22 @@ import { PackageSearch, Search, X } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
 
-const CATEGORIES = ["All", "Bags", "Pouches", "Accessories"] as const;
+const CATEGORIES = [
+  "All",
+  "Bags",
+  "Pouches",
+  "Hairbands",
+  "Dreamcatchers",
+  "Accessories",
+] as const;
 type Category = (typeof CATEGORIES)[number];
 
 const tabOcids: Record<Category, string> = {
   All: "shop.all_tab",
   Bags: "shop.bags_tab",
   Pouches: "shop.pouches_tab",
+  Hairbands: "shop.hairbands_tab",
+  Dreamcatchers: "shop.dreamcatchers_tab",
   Accessories: "shop.accessories_tab",
 };
 
@@ -42,17 +51,17 @@ export function Shop() {
   return (
     <main className="min-h-screen">
       {/* Page header */}
-      <section className="bg-muted/50 border-b border-border py-16 px-4">
+      <section className="bg-muted/50 border-b border-border py-10 sm:py-16 px-4">
         <div className="container mx-auto max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="font-display text-4xl sm:text-5xl font-bold text-foreground mb-3">
+            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-3">
               The Shop
             </h1>
-            <p className="text-muted-foreground text-lg max-w-lg">
+            <p className="text-muted-foreground text-base sm:text-lg max-w-lg">
               Browse our collection of handmade crochet pieces, each one unique.
             </p>
           </motion.div>
@@ -66,7 +75,7 @@ export function Shop() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="relative mb-6 max-w-lg"
+          className="relative mb-6 w-full sm:max-w-lg"
         >
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
           <Input
@@ -91,14 +100,15 @@ export function Shop() {
         </motion.div>
 
         {/* Category filters */}
-        <div className="flex flex-wrap gap-2 mb-10">
+        <div className="flex flex-wrap gap-2 mb-8 sm:mb-10">
           {CATEGORIES.map((cat) => (
             <button
               type="button"
               key={cat}
               data-ocid={tabOcids[cat]}
               onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 border ${
+              style={{ touchAction: "manipulation" }}
+              className={`px-4 sm:px-5 py-2 min-h-[40px] rounded-full text-sm font-medium transition-all duration-200 border ${
                 activeCategory === cat
                   ? "bg-primary text-primary-foreground border-primary shadow-warm"
                   : "bg-card text-foreground/70 border-border hover:border-primary/50 hover:text-foreground"
@@ -126,7 +136,7 @@ export function Shop() {
         {isLoading && (
           <div
             data-ocid="shop.loading_state"
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
           >
             {(["sk1", "sk2", "sk3", "sk4", "sk5", "sk6"] as const).map((k) => (
               <div key={k} className="space-y-3">
@@ -170,7 +180,7 @@ export function Shop() {
 
         {/* Product grid */}
         {!isLoading && filtered.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {filtered.map((product, i) => (
               <ProductCard
                 key={product.id.toString()}
