@@ -30,28 +30,20 @@ export function Home() {
   const allProducts =
     products && products.length > 0 ? products : sampleProducts;
 
-  const newArrivals = allProducts.slice(0, 4);
-  const favourites = allProducts.slice(0, 4);
+  // Handpicked spread across categories for variety
+  const newArrivals = [0, 5, 10, 14].map((i) => allProducts[i]).filter(Boolean);
+  const favourites = [24, 22, 2, 7].map((i) => allProducts[i]).filter(Boolean);
 
   return (
     <main>
       {/* ── Hero ── */}
       <section className="relative min-h-[80vh] sm:min-h-[90vh] flex items-center justify-center overflow-hidden">
-        {/* Background image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage:
-              "url('/assets/generated/hero-crochet-bg.dim_1400x700.jpg')",
-          }}
-          aria-hidden="true"
-        />
-        {/* Warm overlay gradient */}
+        {/* Rose-brown gradient — deep rose-brown → warm mauve → blush */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(135deg, oklch(0.22 0.04 45 / 0.70) 0%, oklch(0.62 0.14 47 / 0.45) 60%, oklch(0.76 0.08 10 / 0.35) 100%)",
+              "linear-gradient(160deg, oklch(0.42 0.060 15) 0%, oklch(0.58 0.080 15) 40%, oklch(0.75 0.055 15) 70%, oklch(0.90 0.025 15) 100%)",
           }}
           aria-hidden="true"
         />
@@ -62,7 +54,7 @@ export function Home() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-block mb-4 text-sm font-medium tracking-widest uppercase text-primary-foreground/80 bg-primary-foreground/10 backdrop-blur-sm rounded-full px-4 py-1.5 border border-primary-foreground/20"
+            className="inline-block mb-4 text-sm font-medium tracking-widest uppercase text-white/90 bg-white/20 backdrop-blur-sm rounded-full px-4 py-1.5 border border-white/30"
           >
             Handmade with heart ✦
           </motion.p>
@@ -71,7 +63,7 @@ export function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-display text-3xl sm:text-5xl lg:text-7xl font-bold text-primary-foreground leading-[1.1] tracking-tight text-balance mb-5 sm:mb-6"
+            className="font-display text-3xl sm:text-5xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight text-balance mb-5 sm:mb-6"
           >
             Handmade with Love,
             <br />
@@ -82,7 +74,7 @@ export function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-base sm:text-xl text-primary-foreground/85 max-w-xl mx-auto mb-7 sm:mb-8 leading-relaxed"
+            className="text-base sm:text-xl text-white/80 max-w-xl mx-auto mb-7 sm:mb-8 leading-relaxed"
           >
             Unique crochet pouches, hairbands &amp; accessories — handcrafted
             just for you.
@@ -97,8 +89,12 @@ export function Home() {
               size="lg"
               data-ocid="hero.shop_now_button"
               onClick={() => navigate({ to: "/shop" })}
-              style={{ touchAction: "manipulation" }}
-              className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 rounded-full px-8 py-5 sm:py-6 text-base font-semibold shadow-warm-lg hover:shadow-warm transition-all duration-300 group min-h-[52px]"
+              style={{
+                touchAction: "manipulation",
+                backgroundColor: "white",
+                color: "oklch(0.42 0.060 15)",
+              }}
+              className="rounded-full px-8 py-5 sm:py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 group min-h-[52px] hover:bg-white/90"
             >
               Shop Now
               <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -118,7 +114,7 @@ export function Home() {
           >
             <path
               d="M0 80L60 66.7C120 53.3 240 26.7 360 20C480 13.3 600 26.7 720 33.3C840 40 960 40 1080 36.7C1200 33.3 1320 26.7 1380 23.3L1440 20V80H0Z"
-              fill="oklch(0.97 0.012 75)"
+              fill="oklch(0.98 0.008 15)"
             />
           </svg>
         </div>
@@ -289,10 +285,10 @@ export function Home() {
           className="container mx-auto max-w-3xl text-center"
         >
           <p className="font-display text-3xl sm:text-5xl font-light italic text-primary leading-tight text-balance">
-            "Every loop tells a story."
+            &ldquo;Every loop tells a story.&rdquo;
           </p>
           <p className="mt-4 text-sm text-muted-foreground">
-            — Knot & Loop Crochet Co
+            — Knot &amp; Loop Crochet Co
           </p>
         </motion.div>
       </section>

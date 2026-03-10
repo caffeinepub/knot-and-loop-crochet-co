@@ -27,8 +27,8 @@ export function About() {
         <div
           className="absolute inset-0 opacity-20"
           style={{
-            backgroundImage: `radial-gradient(circle at 20% 50%, oklch(0.62 0.14 47 / 0.6) 0%, transparent 50%),
-              radial-gradient(circle at 80% 20%, oklch(0.72 0.08 155 / 0.5) 0%, transparent 50%)`,
+            backgroundImage: `radial-gradient(circle at 20% 50%, oklch(0.93 0.04 30 / 0.35) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, oklch(0.95 0.025 148 / 0.3) 0%, transparent 50%)`,
           }}
           aria-hidden="true"
         />

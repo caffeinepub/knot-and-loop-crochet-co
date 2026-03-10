@@ -13,6 +13,7 @@ const CATEGORIES = [
   "Pouches",
   "Hairbands",
   "Dreamcatchers",
+  "Home Decor",
   "Accessories",
 ] as const;
 type Category = (typeof CATEGORIES)[number];
@@ -23,6 +24,7 @@ const tabOcids: Record<Category, string> = {
   Pouches: "shop.pouches_tab",
   Hairbands: "shop.hairbands_tab",
   Dreamcatchers: "shop.dreamcatchers_tab",
+  "Home Decor": "shop.homedecor_tab",
   Accessories: "shop.accessories_tab",
 };
 

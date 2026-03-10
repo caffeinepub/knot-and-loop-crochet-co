@@ -46,6 +46,11 @@ export const productImages: Record<string, string> = {
     "/assets/generated/dreamcatcher-pink-cream.dim_600x600.jpg",
   "Crochet Teal Fringe Dreamcatcher":
     "/assets/generated/dreamcatcher-teal-fringe.dim_600x600.jpg",
+  // Home Decor
+  "Crochet Coaster Bouquet Set":
+    "/assets/generated/crochet-coaster-bouquet.dim_600x600.jpg",
+  "Crochet Flower Pot Set":
+    "/assets/generated/crochet-flower-pot-set.dim_600x600.jpg",
   // Keychains / Accessories
   "Crochet Flower Keychain":
     "/assets/generated/product-flower-crochet-keychain.dim_600x600.jpg",

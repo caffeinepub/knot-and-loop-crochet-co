@@ -17,6 +17,7 @@ const categoryGradients: Record<string, string> = {
   Hats: "from-accent/20 to-accent/5",
   Scarves: "from-amber-200/40 to-amber-100/20",
   Accessories: "from-pink-200/30 to-rose-100/20",
+  "Home Decor": "from-emerald-200/30 to-teal-100/20",
 };
 
 interface ProductCardProps {

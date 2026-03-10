@@ -79,9 +79,9 @@ export default {
         "2xl": "calc(var(--radius) + 8px)",
       },
       boxShadow: {
-        xs: "0 1px 2px 0 rgba(120, 60, 20, 0.06)",
-        warm: "0 4px 20px 0 rgba(120, 60, 20, 0.10)",
-        "warm-lg": "0 8px 40px 0 rgba(120, 60, 20, 0.14)",
+        xs: "0 1px 2px 0 rgba(210, 160, 140, 0.05)",
+        warm: "0 4px 20px 0 rgba(210, 160, 140, 0.07)",
+        "warm-lg": "0 8px 40px 0 rgba(210, 160, 140, 0.10)",
       },
       keyframes: {
         "accordion-down": {
