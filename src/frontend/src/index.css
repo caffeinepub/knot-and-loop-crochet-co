@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Fraunces (display) ── */
+@font-face {
+  font-family: "Fraunces";
+  src: url("/assets/fonts/Fraunces.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Figtree (body) ── */
+@font-face {
+  font-family: "Figtree";
+  src: url("/assets/fonts/Figtree.woff2") format("woff2");
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --radius: 1rem;
+
+    /* ── Core palette — Cream / Peach / Clay Brown / Deep Coffee ── */
+
+    /* Cream: #F5EFE6 */
+    --background: 0.955 0.018 75;
+    /* Deep Coffee: #4A342E */
+    --foreground: 0.265 0.045 32;
+
+    /* Slightly brighter cream for cards */
+    --card: 0.975 0.012 70;
+    --card-foreground: 0.265 0.045 32;
+
+    --popover: 0.975 0.012 70;
+    --popover-foreground: 0.265 0.045 32;
+
+    /* Clay Brown / Terracotta: #B8735C */
+    --primary: 0.565 0.105 35;
+    --primary-foreground: 0.98 0.006 60;
+
+    /* Soft Peach tint: #E8B7A1 lightened */
+    --secondary: 0.92 0.032 42;
+    --secondary-foreground: 0.38 0.06 35;
+
+    /* Warm peach accent: #E8B7A1 */
+    --accent: 0.84 0.058 40;
+    --accent-foreground: 0.265 0.045 32;
+
+    /* Muted cream tone */
+    --muted: 0.938 0.022 68;
+    --muted-foreground: 0.52 0.038 45;
+
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 0.985 0 0;
+
+    /* Warm sandy border */
+    --border: 0.88 0.03 58;
+    --input: 0.88 0.03 58;
+    --ring: 0.565 0.105 35;
+
+    --chart-1: 0.565 0.105 35;
+    --chart-2: 0.775 0.075 38;
+    --chart-3: 0.84 0.058 40;
+    --chart-4: 0.68 0.08 30;
+    --chart-5: 0.45 0.07 28;
+
+    --sidebar: 0.955 0.018 75;
+    --sidebar-foreground: 0.265 0.045 32;
+    --sidebar-primary: 0.565 0.105 35;
+    --sidebar-primary-foreground: 0.98 0.006 60;
+    --sidebar-accent: 0.938 0.022 68;
+    --sidebar-accent-foreground: 0.265 0.045 32;
+    --sidebar-border: 0.88 0.03 58;
+    --sidebar-ring: 0.565 0.105 35;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* ── Global responsive & mobile polish ── */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+a,
+button,
+[role="button"] {
+  touch-action: manipulation;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}

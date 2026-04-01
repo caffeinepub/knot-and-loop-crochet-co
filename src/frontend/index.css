@@ -24,54 +24,58 @@
   :root {
     --radius: 1rem;
 
-    /* ── Core palette — soft ember / warm amber-glow ── */
+    /* ── Core palette — Cream / Peach / Clay Brown / Deep Coffee ── */
 
-    /* very light warm cream background */
-    --background: 0.98 0.010 60;
-    /* deep warm brown text */
-    --foreground: 0.25 0.045 40;
+    /* Cream: #F5EFE6 */
+    --background: 0.955 0.018 75;
+    /* Deep Coffee: #4A342E */
+    --foreground: 0.265 0.045 32;
 
-    --card: 0.995 0.006 55;
-    --card-foreground: 0.25 0.045 40;
+    /* Slightly brighter cream for cards */
+    --card: 0.975 0.012 70;
+    --card-foreground: 0.265 0.045 32;
 
-    --popover: 0.995 0.006 55;
-    --popover-foreground: 0.25 0.045 40;
+    --popover: 0.975 0.012 70;
+    --popover-foreground: 0.265 0.045 32;
 
-    /* rich ember-amber primary */
-    --primary: 0.60 0.110 42;
-    --primary-foreground: 0.99 0.002 55;
+    /* Clay Brown / Terracotta: #B8735C */
+    --primary: 0.565 0.105 35;
+    --primary-foreground: 0.98 0.006 60;
 
-    --secondary: 0.93 0.028 55;
-    --secondary-foreground: 0.38 0.055 42;
+    /* Soft Peach tint: #E8B7A1 lightened */
+    --secondary: 0.92 0.032 42;
+    --secondary-foreground: 0.38 0.060 35;
 
-    /* soft golden accent */
-    --accent: 0.94 0.038 68;
-    --accent-foreground: 0.38 0.065 50;
+    /* Warm peach accent: #E8B7A1 */
+    --accent: 0.84 0.058 40;
+    --accent-foreground: 0.265 0.045 32;
 
-    --muted: 0.96 0.014 58;
-    --muted-foreground: 0.52 0.032 50;
+    /* Muted cream tone */
+    --muted: 0.938 0.022 68;
+    --muted-foreground: 0.52 0.038 45;
 
     --destructive: 0.577 0.245 27.325;
     --destructive-foreground: 0.985 0 0;
 
-    --border: 0.90 0.022 55;
-    --input: 0.90 0.022 55;
-    --ring: 0.60 0.110 42;
+    /* Warm sandy border */
+    --border: 0.88 0.030 58;
+    --input: 0.88 0.030 58;
+    --ring: 0.565 0.105 35;
 
-    --chart-1: 0.60 0.110 42;
-    --chart-2: 0.70 0.085 50;
-    --chart-3: 0.78 0.060 60;
-    --chart-4: 0.65 0.090 35;
-    --chart-5: 0.72 0.070 28;
+    --chart-1: 0.565 0.105 35;
+    --chart-2: 0.775 0.075 38;
+    --chart-3: 0.84 0.058 40;
+    --chart-4: 0.68 0.080 30;
+    --chart-5: 0.45 0.070 28;
 
-    --sidebar: 0.98 0.010 60;
-    --sidebar-foreground: 0.25 0.045 40;
-    --sidebar-primary: 0.60 0.110 42;
-    --sidebar-primary-foreground: 0.99 0.002 55;
-    --sidebar-accent: 0.96 0.014 58;
-    --sidebar-accent-foreground: 0.25 0.045 40;
-    --sidebar-border: 0.90 0.022 55;
-    --sidebar-ring: 0.60 0.110 42;
+    --sidebar: 0.955 0.018 75;
+    --sidebar-foreground: 0.265 0.045 32;
+    --sidebar-primary: 0.565 0.105 35;
+    --sidebar-primary-foreground: 0.98 0.006 60;
+    --sidebar-accent: 0.938 0.022 68;
+    --sidebar-accent-foreground: 0.265 0.045 32;
+    --sidebar-border: 0.88 0.030 58;
+    --sidebar-ring: 0.565 0.105 35;
   }
 
   * {
