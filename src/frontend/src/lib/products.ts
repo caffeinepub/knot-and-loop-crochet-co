@@ -66,4 +66,12 @@ export const sampleProducts: Product[] = [
     category: "Home Decor",
     price: 100,
   },
+  {
+    id: BigInt(9),
+    name: "Crochet Mochi Cat",
+    description:
+      "An irresistibly cute handmade crochet mochi cat in soft pastel cream and pink. Round, squishy, and full of charm — perfect as a desk companion, gift, or a sweet collectible.",
+    category: "Accessories",
+    price: 80,
+  },
 ];

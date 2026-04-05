@@ -13,4 +13,6 @@ export const productImages: Record<string, string> = {
   "Crochet Flower Bracelet / Headband":
     "/assets/uploads/file_0000000099347208aa91a49ff4888cd8-7.png",
   "Crochet Pink Bloom Pot": "/assets/uploads/IMG_20260308_182822-2-8.jpg",
+  "Crochet Mochi Cat":
+    "/assets/generated/crochet-mochi-cat-placeholder.dim_600x600.jpg",
 };
